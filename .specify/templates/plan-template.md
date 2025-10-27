@@ -31,25 +31,29 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-### Performance & Fluidity
-- 60 fps target feasibility assessed for proposed feature.
-- Asset processing will not introduce frame hitches (streaming/lazy load strategy defined).
-- Input handling path remains <16 ms per frame.
+### Smooth Gameplay & Responsive Controls
+- [ ] Performance budget defined: 60 fps target verified as feasible for feature scope
+- [ ] Input handling path analysed: keyboard controls remain <16ms latency
+- [ ] Physics/collision determinism maintained (no random timing or floating-point drift issues)
+- [ ] Frame rate testing plan identified for target hardware
 
-### Consistent UX & Polish
-- Art style impact documented (sprites / UI components needed).
-- Feedback (sound / animation) requirements listed for new interactions.
-- Resolution scaling considerations addressed (16:9 baseline maintained).
+### Hand-Drawn Visual Polish & Consistency
+- [ ] Art asset requirements documented (sprites, backgrounds, UI elements needed)
+- [ ] Animation frame counts and timing specified for new character actions
+- [ ] Visual style guide referenced (hand-drawn colouring-in aesthetic preserved)
+- [ ] No placeholder art in deliverable; final assets planned or integration points defined
 
-### Static Asset Efficiency
-- New assets sized & compression approach planned (spritesheet vs individual files).
-- Initial load size impact estimated (<1 MB maintained).
-- Lazy-load grouping defined for non-critical assets.
+### Static Asset Efficiency & Fast Loading
+- [ ] Asset size budget impact assessed (sprites, audio, level data contributions)
+- [ ] Initial bundle size remains <2 MB compressed (cumulative check)
+- [ ] Sprite sheet organisation planned (avoiding individual image files)
+- [ ] Asset loading strategy defined (critical vs. background/lazy-loaded)
 
-### Deterministic Gameplay & Playtesting
-- Any game logic added described for determinism (no hidden time-based randomness beyond seeded values).
-- Playtest hooks required (restart, frame-step, hitbox visibility) unaffected or extended.
-- Manual playtest scenarios enumerated for feature validation.
+### Kid-Friendly Playability & Clear Feedback
+- [ ] Mechanic simplicity verified for 7-8 year old comprehension
+- [ ] Visual/audio feedback specified for all player interactions
+- [ ] Difficulty progression and checkpoint placement reviewed for fairness
+- [ ] Playtest plan with target age group (or proxy) outlined
 
 ## Project Structure
 
