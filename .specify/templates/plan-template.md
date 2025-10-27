@@ -31,7 +31,25 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+### Performance & Fluidity
+- 60 fps target feasibility assessed for proposed feature.
+- Asset processing will not introduce frame hitches (streaming/lazy load strategy defined).
+- Input handling path remains <16 ms per frame.
+
+### Consistent UX & Polish
+- Art style impact documented (sprites / UI components needed).
+- Feedback (sound / animation) requirements listed for new interactions.
+- Resolution scaling considerations addressed (16:9 baseline maintained).
+
+### Static Asset Efficiency
+- New assets sized & compression approach planned (spritesheet vs individual files).
+- Initial load size impact estimated (<1 MB maintained).
+- Lazy-load grouping defined for non-critical assets.
+
+### Deterministic Gameplay & Playtesting
+- Any game logic added described for determinism (no hidden time-based randomness beyond seeded values).
+- Playtest hooks required (restart, frame-step, hitbox visibility) unaffected or extended.
+- Manual playtest scenarios enumerated for feature validation.
 
 ## Project Structure
 
