@@ -32,7 +32,7 @@ High level requirements:
 - Shooting direction: only forward in the direction the player is facing
 
 ## Boss Enemy
-- Boss has own health bar, 10 health, each staff shot = 1 damange
+- Boss has own health bar, 10 health, each staff shot = 1 damage
 - Boss shoots projectiles, that can be jumped over to avoid, a hit is instant death
 - A large boss character with a health bar, cannot be jumped over to move past, nor jumped on to deal damage
 - Boss can only be dealt damage by shooting from the wizards staff
