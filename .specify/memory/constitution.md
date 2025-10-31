@@ -43,12 +43,6 @@ Game mechanics MUST be intuitive for 7-8 year old players without requiring comp
 - **Load Time**: Menu interactive within 3 seconds of page load
 - **Asset Streaming**: Background assets loaded without blocking gameplay
 
-### Asset Size Budgets
-- **Initial Bundle**: <5 MB compressed (HTML, core JS, critical sprites, menu assets)
-- **Sprite Sheets**: Individual sheets <500 KB, optimised PNG or WebP
-- **Audio Files**: Compressed OGG/MP3, background music <1 MB, SFX <100 KB each
-- **Level Data**: JSON format, minified, <50 KB per level
-
 ### Browser Compatibility
 - **Primary Target**: Desktop Chrome (latest 2 versions)
 - **Screen Resolution**: Optimised for 1920×1080, minimum 1366×768
