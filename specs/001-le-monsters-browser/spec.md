@@ -5,6 +5,16 @@
 **Status**: Draft  
 **Input**: User description: "Le Monsters - browser-based 2D platformer game"
 
+## Clarifications
+
+### Session 2025-10-31
+
+- Q: What is the purpose of collecting coins in the game? → A: Pure score tracking only (no gameplay impact, just displayed count)
+- Q: How frequently does the boss shoot projectiles during the battle? → A: Pattern-based (alternates between rapid bursts and pauses)
+- Q: What happens to the gameplay timer when the player completes the level or gets Game Over? → A: Displays final time on Victory/Game Over screen for player reference
+- Q: How do moving platforms behave in terms of speed and pattern? → A: Slow constant speed with visible path indicators for predictability
+- Q: What happens to bird droppings after they land? → A: Disappear immediately upon landing (temporary hazard)
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Core Gameplay Loop (Priority: P1)
@@ -130,13 +140,13 @@ Player accesses main menu with "New Game" and "About" options, sees HUD during g
 - **FR-010**: Level MUST be completable in 4-6 minutes for average player
 - **FR-011**: Level MUST contain exactly 4 checkpoints, with the last checkpoint positioned just before boss arena
 - **FR-012**: Checkpoints MUST be visual flag poles that raise when Hugo passes them
-- **FR-013**: Level MUST contain collectible coins distributed throughout the environment
-- **FR-014**: Level MUST include moving platforms to traverse wide pits
+- **FR-013**: Level MUST contain collectible coins distributed throughout the environment for score tracking only (no gameplay impact)
+- **FR-014**: Level MUST include moving platforms with slow constant speed and visible path indicators to traverse wide pits
 - **FR-015**: Falling into bottomless pit MUST cause instant death and checkpoint respawn
 
 #### Enemy System
 - **FR-016**: Level MUST contain two enemy types: birds (flying overhead) and hovering sharks (platform patrol)
-- **FR-017**: Birds MUST fly one direction across screen and drop droppings as hazards
+- **FR-017**: Birds MUST fly one direction across screen and drop droppings as hazards that disappear immediately upon landing
 - **FR-018**: Hovering sharks MUST patrol back and forth on their designated platforms
 - **FR-019**: Enemies MUST be defeatable by either: jumping on their heads (stomp) OR shooting with wizard staff
 - **FR-020**: Any contact with enemy or enemy projectile MUST cause instant death (one-hit kill)
@@ -154,7 +164,7 @@ Player accesses main menu with "New Game" and "About" options, sees HUD during g
 #### Boss Battle
 - **FR-029**: Boss arena MUST be located at the rightmost end of the level
 - **FR-030**: Boss MUST have 10 health points, with each wizard staff hit dealing 1 damage
-- **FR-031**: Boss MUST shoot projectiles that can be avoided by jumping
+- **FR-031**: Boss MUST shoot projectiles in pattern-based timing that alternates between rapid bursts and pauses
 - **FR-032**: Boss projectiles MUST cause instant death on contact with Hugo
 - **FR-033**: Boss MUST be immune to stomp damage; only wizard staff can damage boss
 - **FR-034**: Boss MUST display health bar showing remaining health during battle
@@ -168,8 +178,8 @@ Player accesses main menu with "New Game" and "About" options, sees HUD during g
 - **FR-040**: HUD MUST display: remaining lives, coin count, and gameplay timer during active play
 - **FR-041**: Pause menu (ESC key) MUST display "Continue" and "Main Menu" options
 - **FR-042**: Selecting "Main Menu" from pause MUST show confirmation dialogue before exiting active game
-- **FR-043**: Game Over screen MUST appear when all 3 lives are lost
-- **FR-044**: Victory screen MUST appear after boss is defeated
+- **FR-043**: Game Over screen MUST appear when all 3 lives are lost and display final elapsed time
+- **FR-044**: Victory screen MUST appear after boss is defeated and display final completion time
 
 #### Visual & Audio
 - **FR-045**: All visual assets MUST follow hand-drawn colouring-in art style consistently
@@ -188,7 +198,7 @@ Player accesses main menu with "New Game" and "About" options, sees HUD during g
 - **Checkpoint**: Auto-save point marked by flag pole; tracks activation state, position, associated spawn point
 - **Wizard Hat Power-up**: Collectible item granting shooting ability; tracks position, collected state, spawn location for respawn
 - **Coin**: Collectible item for score; tracks position, collected state
-- **Platform**: Solid surface for standing/jumping; includes moving platforms with position, movement pattern, speed
+- **Platform**: Solid surface for standing/jumping; includes moving platforms with slow constant speed, visible path indicators showing movement trajectory, position, movement pattern
 - **Projectile (Player)**: Light projectile from wizard staff; tracks position, velocity, facing direction
 - **Projectile (Boss)**: Boss attack projectile; tracks position, velocity, despawn conditions
 - **Game Session**: Overall game state; tracks lives remaining, total coins collected, elapsed time, current checkpoint, boss defeated status
