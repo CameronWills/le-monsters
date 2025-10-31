@@ -35,7 +35,6 @@
 - **VS Code** + **Phaser 3 snippets extension**: Improved DX
 
 **Constraints:**
-- Target bundle size: <2MB total (including all assets)
 - 60 FPS minimum performance target
 - No external API calls or backend services
 - All game logic runs client-side

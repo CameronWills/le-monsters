@@ -44,7 +44,7 @@ Game mechanics MUST be intuitive for 7-8 year old players without requiring comp
 - **Asset Streaming**: Background assets loaded without blocking gameplay
 
 ### Asset Size Budgets
-- **Initial Bundle**: <2 MB compressed (HTML, core JS, critical sprites, menu assets)
+- **Initial Bundle**: <5 MB compressed (HTML, core JS, critical sprites, menu assets)
 - **Sprite Sheets**: Individual sheets <500 KB, optimised PNG or WebP
 - **Audio Files**: Compressed OGG/MP3, background music <1 MB, SFX <100 KB each
 - **Level Data**: JSON format, minified, <50 KB per level

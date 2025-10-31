@@ -45,7 +45,7 @@
 
 ### Static Asset Efficiency & Fast Loading
 - [ ] Asset size budget impact assessed (sprites, audio, level data contributions)
-- [ ] Initial bundle size remains <2 MB compressed (cumulative check)
+- [ ] Initial bundle size remains <5 MB compressed (cumulative check)
 - [ ] Sprite sheet organisation planned (avoiding individual image files)
 - [ ] Asset loading strategy defined (critical vs. background/lazy-loaded)
 

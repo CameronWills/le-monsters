@@ -215,7 +215,7 @@ Player accesses main menu with "New Game" and "About" options, sees HUD during g
 - **SC-006**: Players successfully navigate through level from start to boss in single session 80% of the time (with 3 lives available)
 - **SC-007**: Boss battle provides fair challenge: average player defeats boss within 3 attempts (using 3-life system)
 - **SC-008**: All visual assets maintain consistent hand-drawn colouring-in art style with no placeholder graphics in delivered build
-- **SC-009**: Total initial asset bundle size remains under 2 MB compressed (meeting constitution standard)
+- **SC-009**: Total initial asset bundle size remains under 5 MB compressed (meeting constitution standard)
 - **SC-010**: Player feedback (visual and audio) for all actions occurs within 100ms of action trigger (jump, collect, shoot, damage)
 - **SC-011**: Checkpoint system successfully saves progress: 95% of deaths result in correct respawn at last activated checkpoint
 - **SC-012**: Game runs stably for continuous 10-minute session without crashes, freezes, or performance degradation
