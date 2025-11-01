@@ -539,39 +539,65 @@ export class GameScene extends Phaser.Scene {
   }
 
   private handlePlayerHitByBird(
-    _playerBody: unknown,
+    playerBody: unknown,
     birdSprite: unknown
   ): void {
     if (this.isDead) return; // Already dead, ignore
 
-    // Get sprite
-    const sprite = birdSprite as Phaser.Physics.Arcade.Sprite;
+    // Get sprites and bodies
+    const bSprite = birdSprite as Phaser.Physics.Arcade.Sprite;
     
     // Find bird entity from sprite
-    const bird = sprite.getData('entity') as EnemyBird;
+    const bird = bSprite.getData('entity') as EnemyBird;
     if (!bird || !bird.isAlive) return;
 
-    // Player takes damage, bird dies
-    this.handlePlayerDeath();
-    bird.die();
+    // Check if player is stomping on bird (landing on top)
+    const isStomping = this.player.sprite.body!.velocity.y > 0 && // Player moving down
+                       this.player.sprite.y < bSprite.y; // Player is above bird
+
+    if (isStomping) {
+      // Player stomps bird - bird dies, player bounces
+      bird.die();
+      this.player.sprite.setVelocityY(-300); // Bounce up
+      this.audioManager.playSfx('stomp');
+      console.log('[GameScene] Player stomped bird');
+    } else {
+      // Player hit from side/below - player takes damage
+      this.handlePlayerDeath();
+      bird.die();
+      console.log('[GameScene] Player hit by bird (not stomping)');
+    }
   }
 
   private handlePlayerHitByShark(
-    _playerBody: unknown,
+    playerBody: unknown,
     sharkSprite: unknown
   ): void {
     if (this.isDead) return; // Already dead, ignore
 
-    // Get sprite
-    const sprite = sharkSprite as Phaser.Physics.Arcade.Sprite;
+    // Get sprites and bodies
+    const sSprite = sharkSprite as Phaser.Physics.Arcade.Sprite;
     
     // Find shark entity from sprite
-    const shark = sprite.getData('entity') as EnemyShark;
+    const shark = sSprite.getData('entity') as EnemyShark;
     if (!shark || !shark.isAlive) return;
 
-    // Player takes damage, shark dies
-    this.handlePlayerDeath();
-    shark.die();
+    // Check if player is stomping on shark (landing on top)
+    const isStomping = this.player.sprite.body!.velocity.y > 0 && // Player moving down
+                       this.player.sprite.y < sSprite.y; // Player is above shark
+
+    if (isStomping) {
+      // Player stomps shark - shark dies, player bounces
+      shark.die();
+      this.player.sprite.setVelocityY(-300); // Bounce up
+      this.audioManager.playSfx('stomp');
+      console.log('[GameScene] Player stomped shark');
+    } else {
+      // Player hit from side/below - player takes damage
+      this.handlePlayerDeath();
+      shark.die();
+      console.log('[GameScene] Player hit by shark (not stomping)');
+    }
   }
 
   private handlePlayerHitByProjectile(
