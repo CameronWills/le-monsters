@@ -1,0 +1,108 @@
+{
+  "metadata": {
+    "id": "level1",
+    "name": "The Forest",
+    "width": 3200,
+    "height": 1080,
+    "background": "forest-bg"
+  },
+  "playerStart": {
+    "x": 100,
+    "y": 900
+  },
+  "platforms": [
+    {
+      "x": 0,
+      "y": 1000,
+      "width": 3200,
+      "height": 80,
+      "type": "static"
+    },
+    {
+      "x": 300,
+      "y": 800,
+      "width": 200,
+      "height": 20,
+      "type": "static"
+    },
+    {
+      "x": 600,
+      "y": 700,
+      "width": 200,
+      "height": 20,
+      "type": "static"
+    },
+    {
+      "x": 900,
+      "y": 600,
+      "width": 200,
+      "height": 20,
+      "type": "static"
+    },
+    {
+      "x": 1400,
+      "y": 800,
+      "width": 300,
+      "height": 20,
+      "type": "static"
+    },
+    {
+      "x": 1900,
+      "y": 700,
+      "width": 200,
+      "height": 20,
+      "type": "static"
+    },
+    {
+      "x": 2300,
+      "y": 800,
+      "width": 300,
+      "height": 20,
+      "type": "static"
+    }
+  ],
+  "checkpoints": [
+    {
+      "x": 800,
+      "y": 920
+    },
+    {
+      "x": 1600,
+      "y": 920
+    }
+  ],
+  "enemies": [],
+  "coins": [
+    {
+      "x": 350,
+      "y": 750
+    },
+    {
+      "x": 400,
+      "y": 750
+    },
+    {
+      "x": 450,
+      "y": 750
+    },
+    {
+      "x": 650,
+      "y": 650
+    },
+    {
+      "x": 950,
+      "y": 550
+    }
+  ],
+  "powerUps": [],
+  "bossArena": {
+    "x": 2800,
+    "y": 400,
+    "width": 400,
+    "height": 600,
+    "bossPosition": {
+      "x": 3000,
+      "y": 700
+    }
+  }
+}
