@@ -21,6 +21,10 @@ export class Player implements IPlayer {
   isGrounded = false;
   shootCooldown = 0;
 
+  // Visual elements for power-up
+  private wizardHatGraphic?: Phaser.GameObjects.Graphics;
+  private wizardStaffGraphic?: Phaser.GameObjects.Graphics;
+
   private scene: Phaser.Scene;
 
   constructor(scene: Phaser.Scene, x: number, y: number) {
@@ -94,10 +98,12 @@ export class Player implements IPlayer {
       return null;
     }
 
-    // TODO: Implement in US2 when we have wizard hat and projectiles
     console.log('[Player] Shoot!');
     this.shootCooldown = GAME_CONFIG.SHOOT_COOLDOWN;
-    return null;
+    
+    // Return a dummy projectile object to signal that shooting happened
+    // The actual projectile will be created by GameScene
+    return {} as IPlayerProjectile;
   }
 
   /**
@@ -188,6 +194,7 @@ export class Player implements IPlayer {
    */
   collectWizardHat(): void {
     this.hasWizardHat = true;
+    this.showWizardHatVisuals();
     console.log('[Player] Collected wizard hat!');
     // TODO: Play power-up sound in US2
   }
@@ -197,7 +204,51 @@ export class Player implements IPlayer {
    */
   removeWizardHat(): void {
     this.hasWizardHat = false;
+    this.hideWizardHatVisuals();
     console.log('[Player] Lost wizard hat');
+  }
+
+  /**
+   * Show visual indicators of wizard hat power-up
+   */
+  private showWizardHatVisuals(): void {
+    // Create wizard hat on player's head
+    if (!this.wizardHatGraphic) {
+      this.wizardHatGraphic = this.scene.add.graphics();
+    }
+    this.wizardHatGraphic.clear();
+    this.wizardHatGraphic.fillStyle(0x9932cc, 1); // Purple wizard hat
+    this.wizardHatGraphic.fillTriangle(-10, -40, 0, -60, 10, -40); // Hat cone
+    this.wizardHatGraphic.fillRect(-12, -40, 24, 6); // Hat brim
+    this.wizardHatGraphic.setDepth(100);
+
+    // Create wizard staff in player's hand
+    if (!this.wizardStaffGraphic) {
+      this.wizardStaffGraphic = this.scene.add.graphics();
+    }
+    this.wizardStaffGraphic.clear();
+    this.wizardStaffGraphic.lineStyle(3, 0x8b4513, 1); // Brown staff
+    this.wizardStaffGraphic.lineBetween(20, 0, 20, -50);
+    this.wizardStaffGraphic.fillStyle(0xffff00, 1); // Yellow orb on top
+    this.wizardStaffGraphic.fillCircle(20, -55, 5);
+    this.wizardStaffGraphic.setDepth(100);
+
+    console.log('[Player] Wizard hat visuals shown');
+  }
+
+  /**
+   * Hide visual indicators of wizard hat power-up
+   */
+  private hideWizardHatVisuals(): void {
+    if (this.wizardHatGraphic) {
+      this.wizardHatGraphic.clear();
+      this.wizardHatGraphic.setVisible(false);
+    }
+    if (this.wizardStaffGraphic) {
+      this.wizardStaffGraphic.clear();
+      this.wizardStaffGraphic.setVisible(false);
+    }
+    console.log('[Player] Wizard hat visuals hidden');
   }
 
   /**
@@ -221,6 +272,21 @@ export class Player implements IPlayer {
     // Update shoot cooldown
     if (this.shootCooldown > 0) {
       this.shootCooldown -= delta;
+    }
+
+    // Update wizard hat visuals to follow player
+    if (this.hasWizardHat && this.wizardHatGraphic && this.wizardStaffGraphic) {
+      const x = this.sprite.x;
+      const y = this.sprite.y;
+      
+      // Position hat on player's head
+      this.wizardHatGraphic.setPosition(x, y);
+      this.wizardHatGraphic.setVisible(true);
+      
+      // Position staff in player's hand (flip based on facing direction)
+      this.wizardStaffGraphic.setPosition(x, y);
+      this.wizardStaffGraphic.setScale(this.facingDirection, 1);
+      this.wizardStaffGraphic.setVisible(true);
     }
 
     // Update animation

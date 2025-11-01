@@ -103,8 +103,8 @@ export class PowerUpWizardHat implements IPowerUpWizardHat {
       (this.sprite.body as Phaser.Physics.Arcade.Body).setEnable(false);
     }
 
-    // Grant player shooting ability
-    player.hasWizardHat = true;
+    // Grant player shooting ability using the proper method
+    player.collectWizardHat();
 
     console.log('[PowerUpWizardHat] Collected by player');
   }
