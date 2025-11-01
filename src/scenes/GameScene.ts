@@ -151,6 +151,62 @@ export class GameScene extends Phaser.Scene {
 
       this.player.update(delta);
     }
+
+    // Update enemies
+    this.birds.getChildren().forEach((birdSprite) => {
+      const sprite = birdSprite as Phaser.Physics.Arcade.Sprite;
+      const bird = sprite.getData('entity') as EnemyBird;
+      if (bird && bird.isActive) {
+        bird.update(delta);
+      }
+    });
+
+    this.sharks.getChildren().forEach((sharkSprite) => {
+      const sprite = sharkSprite as Phaser.Physics.Arcade.Sprite;
+      const shark = sprite.getData('entity') as EnemyShark;
+      if (shark && shark.isActive) {
+        shark.update(delta);
+      }
+    });
+
+    // Update boss
+    if (this.boss && this.boss.isActive) {
+      this.boss.update(delta);
+    }
+
+    // Update projectiles
+    this.playerProjectiles.getChildren().forEach((projectileSprite) => {
+      const sprite = projectileSprite as Phaser.Physics.Arcade.Sprite;
+      const projectile = sprite.getData('entity') as PlayerProjectile;
+      if (projectile && projectile.isActive) {
+        projectile.update(delta);
+        if (projectile.shouldDestroy()) {
+          projectile.destroy();
+        }
+      }
+    });
+
+    this.enemyProjectiles.getChildren().forEach((projectileSprite) => {
+      const sprite = projectileSprite as Phaser.Physics.Arcade.Sprite;
+      const projectile = sprite.getData('entity') as EnemyProjectile;
+      if (projectile && projectile.isActive) {
+        projectile.update(delta);
+        if (projectile.shouldDestroy()) {
+          projectile.destroy();
+        }
+      }
+    });
+
+    this.bossProjectiles.getChildren().forEach((projectileSprite) => {
+      const sprite = projectileSprite as Phaser.Physics.Arcade.Sprite;
+      const projectile = sprite.getData('entity') as BossProjectile;
+      if (projectile && projectile.isActive) {
+        projectile.update(delta);
+        if (projectile.shouldDestroy()) {
+          projectile.destroy();
+        }
+      }
+    });
   }
 
   /**

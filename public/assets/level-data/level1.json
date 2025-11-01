@@ -115,15 +115,15 @@
       "type": "shark",
       "x": 1000,
       "y": 950,
-      "patrolStart": 850,
-      "patrolEnd": 980
+      "patrolStart": 900,
+      "patrolEnd": 1100
     },
     {
       "type": "shark",
       "x": 1800,
-      "y": 900,
-      "patrolStart": 800,
-      "patrolEnd": 980
+      "y": 950,
+      "patrolStart": 1700,
+      "patrolEnd": 1900
     }
   ],
   "coins": [

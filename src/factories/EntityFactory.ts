@@ -185,7 +185,10 @@ export class EntityFactory {
       // return pooled;
     }
 
-    throw new Error('EntityFactory.createBossProjectile not yet implemented');
+    // Create new boss projectile
+    const bossProjectile = new BossProjectile(this.scene, x, y, targetX, targetY);
+    this.bossProjectilePool.push(bossProjectile);
+    return bossProjectile;
   }
 
   /**

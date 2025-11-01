@@ -35,7 +35,7 @@ export class EnemyShark implements IEnemyShark {
     this.patrolStart = patrolStart;
     this.patrolEnd = patrolEnd;
     this.patrolSpeed = GAME_CONFIG.SHARK_PATROL_SPEED;
-    this.patrolDirection = 1; // Start moving down
+    this.patrolDirection = 1; // Start moving right
 
     // Create placeholder texture if it doesn't exist
     if (!scene.textures.exists('shark-placeholder')) {
@@ -46,11 +46,16 @@ export class EnemyShark implements IEnemyShark {
     this.sprite = scene.physics.add.sprite(x, y, 'shark-placeholder');
     this.sprite.setOrigin(0.5, 0.5);
 
+    // Disable gravity for patrol (sharks float in water)
+    if (this.sprite.body) {
+      (this.sprite.body as Phaser.Physics.Arcade.Body).setAllowGravity(false);
+    }
+
     // Store reference to this entity
     this.sprite.setData('entity', this);
 
-    // Set initial velocity (vertical patrol)
-    this.sprite.setVelocityY(this.patrolSpeed * this.patrolDirection);
+    // Set initial velocity (horizontal patrol)
+    this.sprite.setVelocityX(this.patrolSpeed * this.patrolDirection);
 
     console.log(
       `[EnemyShark] Created at (${x}, ${y}), patrol ${patrolStart} to ${patrolEnd}`
@@ -89,11 +94,11 @@ export class EnemyShark implements IEnemyShark {
    */
   isAtBoundary(): boolean {
     if (this.patrolDirection === 1) {
-      // Moving down
-      return this.sprite.y >= this.patrolEnd;
+      // Moving right
+      return this.sprite.x >= this.patrolEnd;
     } else {
-      // Moving up
-      return this.sprite.y <= this.patrolStart;
+      // Moving left
+      return this.sprite.x <= this.patrolStart;
     }
   }
 
@@ -102,13 +107,13 @@ export class EnemyShark implements IEnemyShark {
    */
   reverseDirection(): void {
     this.patrolDirection = this.patrolDirection === 1 ? -1 : 1;
-    this.sprite.setVelocityY(this.patrolSpeed * this.patrolDirection);
+    this.sprite.setVelocityX(this.patrolSpeed * this.patrolDirection);
 
-    // Flip sprite vertically based on direction
-    this.sprite.setFlipY(this.patrolDirection === -1);
+    // Flip sprite horizontally based on direction
+    this.sprite.setFlipX(this.patrolDirection === -1);
 
     console.log(
-      `[EnemyShark] Reversed direction, now moving ${this.patrolDirection === 1 ? 'down' : 'up'}`
+      `[EnemyShark] Reversed direction, now moving ${this.patrolDirection === 1 ? 'right' : 'left'}`
     );
   }
 
@@ -156,9 +161,9 @@ export class EnemyShark implements IEnemyShark {
     this.isAlive = true;
     this.sprite.setPosition(this.spawnPosition.x, this.spawnPosition.y);
     this.sprite.setAlpha(1);
-    this.patrolDirection = 1; // Reset to moving down
-    this.sprite.setVelocityY(this.patrolSpeed * this.patrolDirection);
-    this.sprite.setFlipY(false);
+    this.patrolDirection = 1; // Reset to moving right
+    this.sprite.setVelocityX(this.patrolSpeed * this.patrolDirection);
+    this.sprite.setFlipX(false);
 
     console.log('[EnemyShark] Respawned');
   }
