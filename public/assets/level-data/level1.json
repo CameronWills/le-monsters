@@ -71,7 +71,40 @@
       "y": 920
     }
   ],
-  "enemies": [],
+  "enemies": [
+    {
+      "type": "bird",
+      "x": 500,
+      "y": 650,
+      "flyDirection": 1
+    },
+    {
+      "type": "bird",
+      "x": 1200,
+      "y": 700,
+      "flyDirection": -1
+    },
+    {
+      "type": "bird",
+      "x": 2000,
+      "y": 600,
+      "flyDirection": 1
+    },
+    {
+      "type": "shark",
+      "x": 1000,
+      "y": 950,
+      "patrolStart": 850,
+      "patrolEnd": 980
+    },
+    {
+      "type": "shark",
+      "x": 1800,
+      "y": 900,
+      "patrolStart": 800,
+      "patrolEnd": 980
+    }
+  ],
   "coins": [
     {
       "x": 350,

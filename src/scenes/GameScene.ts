@@ -10,10 +10,14 @@ import { EntityFactory } from '../factories/EntityFactory';
 import { InputManager } from '../managers/InputManager';
 import { GameStateManager } from '../managers/GameStateManager';
 import { HUDManager } from '../managers/HUDManager';
+import { AudioManager } from '../managers/AudioManager';
 import { Player } from '../entities/Player';
 import { Platform } from '../entities/Platform';
 import { Coin } from '../entities/Coin';
 import { Checkpoint } from '../entities/Checkpoint';
+import { EnemyBird } from '../entities/EnemyBird';
+import { EnemyShark } from '../entities/EnemyShark';
+import { EnemyProjectile } from '../entities/EnemyProjectile';
 
 export class GameScene extends Phaser.Scene {
   private levelData!: ILevelData;
@@ -21,12 +25,16 @@ export class GameScene extends Phaser.Scene {
   private inputManager!: InputManager;
   private gameStateManager!: GameStateManager;
   private hudManager!: HUDManager;
+  private audioManager!: AudioManager;
 
   // Game entities
   private player!: Player;
   private platforms!: Phaser.GameObjects.Group;
   private coins!: Phaser.GameObjects.Group;
   private checkpoints!: Phaser.GameObjects.Group;
+  private birds!: Phaser.GameObjects.Group;
+  private sharks!: Phaser.GameObjects.Group;
+  private enemyProjectiles!: Phaser.GameObjects.Group;
 
   // Death/respawn state
   private isDead = false;
@@ -49,6 +57,8 @@ export class GameScene extends Phaser.Scene {
     this.inputManager.init(this);
     this.gameStateManager = new GameStateManager();
     this.hudManager = new HUDManager();
+    this.audioManager = new AudioManager();
+    this.audioManager.init(this);
 
     // Start new game session
     this.gameStateManager.startNewSession();
@@ -102,6 +112,7 @@ export class GameScene extends Phaser.Scene {
 
       if (this.inputManager.isJumpPressed()) {
         this.player.jump();
+        this.audioManager.playSfx('jump');
         this.inputManager.consumeJump(); // Clear jump buffer
       }
 
@@ -149,6 +160,17 @@ export class GameScene extends Phaser.Scene {
       runChildUpdate: true, // Enable update() calls on group children
     });
     this.checkpoints = this.add.group();
+    this.birds = this.add.group({
+      runChildUpdate: true, // Enable update() calls for birds
+    });
+    this.sharks = this.add.group({
+      runChildUpdate: true, // Enable update() calls for sharks
+    });
+    this.enemyProjectiles = this.add.group({
+      runChildUpdate: true, // Enable update() calls for projectiles
+    });
+
+    console.log('[GameScene] Groups created');
   }
 
   private spawnEntities(): void {
@@ -176,6 +198,30 @@ export class GameScene extends Phaser.Scene {
         checkpointData.y
       ) as Checkpoint;
       this.checkpoints.add(checkpoint.sprite);
+    });
+
+    // Spawn enemy birds
+    this.levelData.enemies.forEach((enemyData) => {
+      if (enemyData.type === 'bird') {
+        const bird = this.entityFactory.createBird(
+          enemyData.x,
+          enemyData.y,
+          enemyData.flyDirection as 1 | -1,
+          (projectile) => {
+            // Add dropped projectile to the scene group
+            this.enemyProjectiles.add(projectile.sprite);
+          }
+        ) as EnemyBird;
+        this.birds.add(bird.sprite);
+      } else if (enemyData.type === 'shark') {
+        const shark = this.entityFactory.createShark(
+          enemyData.x,
+          enemyData.y,
+          enemyData.patrolStart || enemyData.y - 100,
+          enemyData.patrolEnd || enemyData.y + 100
+        ) as EnemyShark;
+        this.sharks.add(shark.sprite);
+      }
     });
 
     // Spawn player
@@ -212,6 +258,33 @@ export class GameScene extends Phaser.Scene {
       this
     );
 
+    // Player hit by enemy bird
+    this.physics.add.overlap(
+      this.player.sprite,
+      this.birds,
+      this.handlePlayerHitByBird,
+      undefined,
+      this
+    );
+
+    // Player hit by enemy shark
+    this.physics.add.overlap(
+      this.player.sprite,
+      this.sharks,
+      this.handlePlayerHitByShark,
+      undefined,
+      this
+    );
+
+    // Player hit by enemy projectile
+    this.physics.add.overlap(
+      this.player.sprite,
+      this.enemyProjectiles,
+      this.handlePlayerHitByProjectile,
+      undefined,
+      this
+    );
+
     console.log('[GameScene] Collisions configured');
   }
 
@@ -228,6 +301,9 @@ export class GameScene extends Phaser.Scene {
 
     // Collect coin
     coin.collect(this.player);
+    
+    // Play collect sound
+    this.audioManager.playSfx('coin');
     
     // Update game state
     this.gameStateManager.collectCoin();
@@ -248,6 +324,9 @@ export class GameScene extends Phaser.Scene {
     if (!checkpoint.isActivated) {
       checkpoint.activate();
 
+      // Play checkpoint sound
+      this.audioManager.playSfx('checkpoint');
+
       // Save checkpoint in game state
       const respawnPos = checkpoint.getRespawnPosition();
       this.gameStateManager.setCheckpoint(respawnPos);
@@ -256,11 +335,68 @@ export class GameScene extends Phaser.Scene {
     }
   }
 
+  private handlePlayerHitByBird(
+    _playerBody: unknown,
+    birdSprite: unknown
+  ): void {
+    if (this.isDead) return; // Already dead, ignore
+
+    // Get sprite
+    const sprite = birdSprite as Phaser.Physics.Arcade.Sprite;
+    
+    // Find bird entity from sprite
+    const bird = sprite.getData('entity') as EnemyBird;
+    if (!bird || !bird.isAlive) return;
+
+    // Player takes damage, bird dies
+    this.handlePlayerDeath();
+    bird.die();
+  }
+
+  private handlePlayerHitByShark(
+    _playerBody: unknown,
+    sharkSprite: unknown
+  ): void {
+    if (this.isDead) return; // Already dead, ignore
+
+    // Get sprite
+    const sprite = sharkSprite as Phaser.Physics.Arcade.Sprite;
+    
+    // Find shark entity from sprite
+    const shark = sprite.getData('entity') as EnemyShark;
+    if (!shark || !shark.isAlive) return;
+
+    // Player takes damage, shark dies
+    this.handlePlayerDeath();
+    shark.die();
+  }
+
+  private handlePlayerHitByProjectile(
+    _playerBody: unknown,
+    projectileSprite: unknown
+  ): void {
+    if (this.isDead) return; // Already dead, ignore
+
+    // Get sprite
+    const sprite = projectileSprite as Phaser.Physics.Arcade.Sprite;
+    
+    // Find projectile entity from sprite
+    const projectile = sprite.getData('entity') as EnemyProjectile;
+    if (!projectile || !projectile.isActive) return;
+
+    // Player takes damage, projectile destroyed
+    this.handlePlayerDeath();
+    projectile.destroy();
+  }
+
   private handlePlayerDeath(): void {
     if (this.isDead) return; // Already dead
 
     this.isDead = true;
     this.deathTimer = 0;
+
+    // Play death sound
+    this.audioManager.playSfx('death');
 
     // Lose a life
     const remainingLives = this.gameStateManager.loseLife();
@@ -290,6 +426,10 @@ export class GameScene extends Phaser.Scene {
 
   private handleGameOver(): void {
     console.log('[GameScene] Game Over');
+
+    // Play game over sound
+    this.audioManager.playSfx('gameover');
+    this.audioManager.stopMusic();
 
     // End session
     const sessionData = this.gameStateManager.endSession();

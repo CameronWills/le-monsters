@@ -9,6 +9,9 @@ import { Player } from '../entities/Player';
 import { Platform } from '../entities/Platform';
 import { Coin } from '../entities/Coin';
 import { Checkpoint } from '../entities/Checkpoint';
+import { EnemyBird } from '../entities/EnemyBird';
+import { EnemyShark } from '../entities/EnemyShark';
+import { EnemyProjectile } from '../entities/EnemyProjectile';
 import type {
   IPlayer,
   IEnemyBird,
@@ -55,23 +58,27 @@ export class EntityFactory {
 
   /**
    * Create bird enemy
-   * TODO: Implement in US2 tasks
    */
-  createBird(_x: number, _y: number, _flyDirection: 1 | -1): IEnemyBird {
-    throw new Error('EntityFactory.createBird not yet implemented');
+  createBird(
+    x: number,
+    y: number,
+    flyDirection: 1 | -1,
+    onDropProjectile?: (projectile: IEnemyProjectile) => void
+  ): IEnemyBird {
+    const worldWidth = this.scene.physics.world.bounds.width;
+    return new EnemyBird(this.scene, x, y, flyDirection, worldWidth, onDropProjectile);
   }
 
   /**
    * Create shark enemy
-   * TODO: Implement in US2 tasks
    */
   createShark(
-    _x: number,
-    _y: number,
-    _patrolStart: number,
-    _patrolEnd: number
+    x: number,
+    y: number,
+    patrolStart: number,
+    patrolEnd: number
   ): IEnemyShark {
-    throw new Error('EntityFactory.createShark not yet implemented');
+    return new EnemyShark(this.scene, x, y, patrolStart, patrolEnd);
   }
 
   /**
@@ -156,17 +163,14 @@ export class EntityFactory {
 
   /**
    * Create enemy projectile (with pooling)
-   * TODO: Implement in US2 tasks
    */
-  createEnemyProjectile(x: number, y: number): IEnemyProjectile {
-    const pooled = this.enemyProjectilePool.find((p) => !p.isActive);
-    if (pooled) {
-      // Reuse from pool
-      // pooled.reset(x, y);
-      // return pooled;
-    }
-
-    throw new Error('EntityFactory.createEnemyProjectile not yet implemented');
+  createEnemyProjectile(
+    x: number,
+    y: number,
+    velocityX: number,
+    velocityY: number
+  ): IEnemyProjectile {
+    return new EnemyProjectile(this.scene, x, y, velocityX, velocityY);
   }
 
   /**
