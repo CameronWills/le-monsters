@@ -170,8 +170,28 @@ export class GameScene extends Phaser.Scene {
     });
 
     // Update boss
-    if (this.boss && this.boss.isActive) {
-      this.boss.update(delta);
+    if (this.boss && this.boss.isAlive) {
+      // Check if player entered boss arena and activate boss
+      if (!this.boss.isActive && this.levelData.bossArena) {
+        const arena = this.levelData.bossArena;
+        const playerInArena = 
+          this.player.sprite.x >= arena.x &&
+          this.player.sprite.x <= arena.x + arena.width &&
+          this.player.sprite.y >= arena.y &&
+          this.player.sprite.y <= arena.y + arena.height;
+
+        if (playerInArena) {
+          console.log('[GameScene] Player entered boss arena - activating boss!');
+          this.boss.isActive = true;
+          this.hudManager.showBossHealthBar();
+          this.hudManager.updateBossHealth(this.boss.health, this.boss.maxHealth);
+        }
+      }
+
+      // Update boss if active
+      if (this.boss.isActive) {
+        this.boss.update(delta);
+      }
     }
 
     // Update projectiles
@@ -350,9 +370,10 @@ export class GameScene extends Phaser.Scene {
         }
       ) as Boss;
 
-      // Show boss health bar immediately when boss exists
-      this.hudManager.showBossHealthBar();
-      this.hudManager.updateBossHealth(this.boss.health, this.boss.maxHealth);
+      // Boss starts inactive - will activate when player enters arena
+      this.boss.isActive = false;
+
+      // Don't show health bar yet - will show when player enters arena
     }
 
     // Camera follows player
