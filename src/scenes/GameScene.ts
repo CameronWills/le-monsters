@@ -4,8 +4,8 @@
  */
 
 import Phaser from 'phaser';
-import { SCENE_KEYS } from '../config/constants';
-import type { ILevelData, ICheckpoint } from '../types/entities';
+import { SCENE_KEYS, GAME_CONFIG } from '../config/constants';
+import type { ILevelData } from '../types/entities';
 import { EntityFactory } from '../factories/EntityFactory';
 import { InputManager } from '../managers/InputManager';
 import { GameStateManager } from '../managers/GameStateManager';
@@ -673,6 +673,10 @@ export class GameScene extends Phaser.Scene {
     this.isDead = true;
     this.deathTimer = 0;
 
+    // Disable player physics temporarily to prevent further collisions
+    this.player.sprite.setVelocity(0, 0);
+    this.player.sprite.setAlpha(0.3);
+
     // Play death sound
     this.audioManager.playSfx('death');
 
@@ -696,10 +700,18 @@ export class GameScene extends Phaser.Scene {
     const checkpoint = this.gameStateManager.getCurrentCheckpoint();
     const respawnPos = checkpoint ?? this.levelData.playerStart;
 
-    // Respawn player at checkpoint
-    this.player.respawnAtCheckpoint(respawnPos as unknown as ICheckpoint);
+    // Re-enable player sprite
+    this.player.sprite.setAlpha(1);
+    this.player.sprite.setPosition(respawnPos.x, respawnPos.y);
+    this.player.sprite.setVelocity(0, 0);
 
-    console.log('[GameScene] Player respawned');
+    // Reset power-ups
+    this.player.removeWizardHat();
+
+    // Grant invincibility
+    this.player.makeInvincible(GAME_CONFIG.PLAYER_INVINCIBILITY_DURATION);
+
+    console.log('[GameScene] Player respawned at', respawnPos);
   }
 
   private handleGameOver(): void {
