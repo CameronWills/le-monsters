@@ -118,6 +118,13 @@ export class GameScene extends Phaser.Scene {
 
     // Update player with input
     if (this.player && this.player.isActive) {
+      // Check for falling into pit BEFORE processing input
+      if (this.player.sprite.y > this.levelData.metadata.height) {
+        console.log('[GameScene] Player fell into pit! y=', this.player.sprite.y, 'height=', this.levelData.metadata.height);
+        this.handlePlayerDeath();
+        return; // Stop processing this frame
+      }
+
       const moveX = this.inputManager.getMovementX();
       this.player.move(moveX);
 
@@ -143,11 +150,6 @@ export class GameScene extends Phaser.Scene {
       }
 
       this.player.update(delta);
-
-      // Check for falling into pit
-      if (this.player.sprite.y > this.levelData.metadata.height) {
-        this.handlePlayerDeath();
-      }
     }
   }
 
@@ -159,11 +161,12 @@ export class GameScene extends Phaser.Scene {
     console.log('[GameScene] Level loaded:', this.levelData.metadata.name);
 
     // Set world bounds based on level size
+    // Extend bottom boundary to allow falling into pits
     this.physics.world.setBounds(
       0,
       0,
       this.levelData.metadata.width,
-      this.levelData.metadata.height
+      this.levelData.metadata.height + 500 // Extra space below for pit detection
     );
 
     // Set camera bounds

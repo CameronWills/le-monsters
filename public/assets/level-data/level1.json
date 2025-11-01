@@ -14,7 +14,28 @@
     {
       "x": 0,
       "y": 1000,
-      "width": 3200,
+      "width": 500,
+      "height": 80,
+      "type": "static"
+    },
+    {
+      "x": 700,
+      "y": 1000,
+      "width": 500,
+      "height": 80,
+      "type": "static"
+    },
+    {
+      "x": 1400,
+      "y": 1000,
+      "width": 500,
+      "height": 80,
+      "type": "static"
+    },
+    {
+      "x": 2100,
+      "y": 1000,
+      "width": 1100,
       "height": 80,
       "type": "static"
     },
