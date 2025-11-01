@@ -20,6 +20,8 @@ import { EnemyShark } from '../entities/EnemyShark';
 import { EnemyProjectile } from '../entities/EnemyProjectile';
 import { PowerUpWizardHat } from '../entities/PowerUpWizardHat';
 import { PlayerProjectile } from '../entities/PlayerProjectile';
+import { Boss } from '../entities/Boss';
+import { BossProjectile } from '../entities/BossProjectile';
 
 export class GameScene extends Phaser.Scene {
   private levelData!: ILevelData;
@@ -39,6 +41,8 @@ export class GameScene extends Phaser.Scene {
   private enemyProjectiles!: Phaser.GameObjects.Group;
   private wizardHats!: Phaser.GameObjects.Group;
   private playerProjectiles!: Phaser.GameObjects.Group;
+  private boss?: Boss;
+  private bossProjectiles!: Phaser.GameObjects.Group;
 
   // Death/respawn state
   private isDead = false;
@@ -55,12 +59,16 @@ export class GameScene extends Phaser.Scene {
   create(): void {
     console.log('[GameScene] Creating game...');
 
+    // Fade in from black
+    this.cameras.main.fadeIn(500, 0, 0, 0);
+
     // Initialize managers
     this.entityFactory = new EntityFactory(this);
     this.inputManager = new InputManager();
     this.inputManager.init(this);
     this.gameStateManager = new GameStateManager();
     this.hudManager = new HUDManager();
+    this.hudManager.init(this); // Initialize HUD early so it's ready for boss health bar
     this.audioManager = new AudioManager();
     this.audioManager.init(this);
 
@@ -79,8 +87,7 @@ export class GameScene extends Phaser.Scene {
     // Setup collisions
     this.setupCollisions();
 
-    // Initialize HUD
-    this.hudManager.init(this);
+    // Update HUD with initial values
     this.updateHUD();
 
     // Setup pause functionality
@@ -190,6 +197,9 @@ export class GameScene extends Phaser.Scene {
     this.playerProjectiles = this.add.group({
       runChildUpdate: true, // Enable update() calls for player projectiles
     });
+    this.bossProjectiles = this.add.group({
+      runChildUpdate: true, // Enable update() calls for boss projectiles
+    });
 
     console.log('[GameScene] Groups created');
   }
@@ -261,6 +271,30 @@ export class GameScene extends Phaser.Scene {
       this.levelData.playerStart.x,
       this.levelData.playerStart.y
     ) as Player;
+
+    // Spawn boss in arena
+    if (this.levelData.bossArena) {
+      this.boss = this.entityFactory.createBoss(
+        this.levelData.bossArena.bossPosition.x,
+        this.levelData.bossArena.bossPosition.y,
+        this.player.sprite,
+        (_projectile) => {
+          // Create boss projectile targeting player
+          const bossProjectile = this.entityFactory.createBossProjectile(
+            this.boss!.sprite.x,
+            this.boss!.sprite.y,
+            this.player.sprite.x,
+            this.player.sprite.y
+          ) as BossProjectile;
+          
+          this.bossProjectiles.add(bossProjectile.sprite);
+        }
+      ) as Boss;
+
+      // Show boss health bar immediately when boss exists
+      this.hudManager.showBossHealthBar();
+      this.hudManager.updateBossHealth(this.boss.health, this.boss.maxHealth);
+    }
 
     // Camera follows player
     this.cameras.main.startFollow(this.player.sprite, true, 0.1, 0.1);
@@ -343,6 +377,36 @@ export class GameScene extends Phaser.Scene {
       undefined,
       this
     );
+
+    // Boss collision detection
+    if (this.boss) {
+      // Player hit by boss
+      this.physics.add.overlap(
+        this.player.sprite,
+        this.boss.sprite,
+        this.handlePlayerHitByBoss,
+        undefined,
+        this
+      );
+
+      // Player hit by boss projectile
+      this.physics.add.overlap(
+        this.player.sprite,
+        this.bossProjectiles,
+        this.handlePlayerHitByBossProjectile,
+        undefined,
+        this
+      );
+
+      // Player projectile hits boss
+      this.physics.add.overlap(
+        this.playerProjectiles,
+        this.boss.sprite,
+        this.handlePlayerProjectileHitBoss,
+        undefined,
+        this
+      );
+    }
 
     console.log('[GameScene] Collisions configured');
   }
@@ -480,6 +544,9 @@ export class GameScene extends Phaser.Scene {
     if (!projectile || !projectile.isActive) return;
     if (!bird || !bird.isAlive) return;
 
+    // Particle effect on bird death (red)
+    this.createParticleExplosion(bSprite.x, bSprite.y, 0xff4444);
+
     // Destroy both
     projectile.destroy();
     bird.die();
@@ -502,11 +569,102 @@ export class GameScene extends Phaser.Scene {
     if (!projectile || !projectile.isActive) return;
     if (!shark || !shark.isAlive) return;
 
+    // Particle effect on shark death (blue)
+    this.createParticleExplosion(sSprite.x, sSprite.y, 0x4444ff);
+
     // Destroy both
     projectile.destroy();
     shark.die();
 
     console.log('[GameScene] Player projectile hit shark');
+  }
+
+  private handlePlayerHitByBoss(
+    _playerBody: unknown,
+    _bossSprite: unknown
+  ): void {
+    if (this.isDead) return; // Already dead, ignore
+
+    // Camera shake on impact
+    this.cameras.main.shake(200, 0.01);
+
+    // Player touches boss = instant death
+    this.handlePlayerDeath();
+    
+    console.log('[GameScene] Player hit by boss');
+  }
+
+  private handlePlayerHitByBossProjectile(
+    _playerBody: unknown,
+    projectileSprite: unknown
+  ): void {
+    if (this.isDead) return; // Already dead, ignore
+
+    // Get sprite
+    const sprite = projectileSprite as Phaser.Physics.Arcade.Sprite;
+    
+    // Find projectile entity from sprite
+    const projectile = sprite.getData('entity') as BossProjectile;
+    if (!projectile || !projectile.isActive) return;
+
+    // Camera shake on impact
+    this.cameras.main.shake(200, 0.01);
+
+    // Player takes damage, projectile destroyed
+    this.handlePlayerDeath();
+    projectile.destroy();
+    
+    console.log('[GameScene] Player hit by boss projectile');
+  }
+
+  private handlePlayerProjectileHitBoss(
+    projectileSprite: unknown,
+    _bossSprite: unknown
+  ): void {
+    if (!this.boss || !this.boss.isAlive) return;
+
+    // Get sprite
+    const pSprite = projectileSprite as Phaser.Physics.Arcade.Sprite;
+    
+    // Find projectile entity from sprite
+    const projectile = pSprite.getData('entity') as PlayerProjectile;
+    if (!projectile || !projectile.isActive) return;
+
+    // Camera shake on boss hit
+    this.cameras.main.shake(150, 0.008);
+
+    // Destroy projectile, damage boss
+    projectile.destroy();
+    this.boss.takeDamage(1);
+
+    // Update boss health bar
+    this.hudManager.updateBossHealth(this.boss.health, this.boss.maxHealth);
+
+    // Check if boss defeated
+    if (!this.boss.isAlive) {
+      this.handleBossDefeat();
+    }
+    
+    console.log('[GameScene] Player projectile hit boss');
+  }
+
+  private handleBossDefeat(): void {
+    console.log('[GameScene] Boss defeated! Victory!');
+    
+    // Hide boss health bar
+    this.hudManager.hideBossHealthBar();
+    
+    // Stop music
+    this.audioManager.stopMusic();
+    
+    // Transition to victory scene with fade
+    this.cameras.main.fadeOut(1000, 0, 0, 0);
+    this.cameras.main.once('camerafadeoutcomplete', () => {
+      this.scene.start(SCENE_KEYS.VICTORY, {
+        time: this.gameStateManager.getElapsedTime(),
+        coins: this.gameStateManager.getCoinCount(),
+      });
+    });
   }
 
   private handlePlayerDeath(): void {
@@ -573,6 +731,27 @@ export class GameScene extends Phaser.Scene {
   private updateHUD(): void {
     this.hudManager.updateLives(this.gameStateManager.getLives());
     this.hudManager.updateCoins(this.gameStateManager.getCoinCount());
+  }
+
+  /**
+   * Create particle explosion effect
+   */
+  private createParticleExplosion(x: number, y: number, color: number): void {
+    const particles = this.add.particles(x, y, 'particle', {
+      speed: { min: 100, max: 200 },
+      angle: { min: 0, max: 360 },
+      scale: { start: 1, end: 0 },
+      alpha: { start: 1, end: 0 },
+      tint: color,
+      lifespan: 500,
+      quantity: 10,
+      blendMode: 'ADD',
+    });
+
+    // Auto-destroy after emission
+    this.time.delayedCall(600, () => {
+      particles.destroy();
+    });
   }
 }
 

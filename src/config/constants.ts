@@ -10,7 +10,7 @@ export const GAME_CONFIG = {
 
   // === Player ===
   PLAYER_SPEED: 200, // Max run speed (pixels/second)
-  PLAYER_JUMP_VELOCITY: -500, // Jump strength (negative = upward)
+  PLAYER_JUMP_VELOCITY: -600, // Jump strength (negative = upward) - increased for better platforming
   PLAYER_ACCELERATION: 600, // Acceleration/deceleration rate
   PLAYER_MAX_LIVES: 3,
   PLAYER_INVINCIBILITY_DURATION: 1000, // milliseconds

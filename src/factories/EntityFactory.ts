@@ -14,6 +14,8 @@ import { EnemyShark } from '../entities/EnemyShark';
 import { EnemyProjectile } from '../entities/EnemyProjectile';
 import { PowerUpWizardHat } from '../entities/PowerUpWizardHat';
 import { PlayerProjectile } from '../entities/PlayerProjectile';
+import { Boss } from '../entities/Boss';
+import { BossProjectile } from '../entities/BossProjectile';
 import type {
   IPlayer,
   IEnemyBird,
@@ -85,10 +87,14 @@ export class EntityFactory {
 
   /**
    * Create boss entity
-   * TODO: Implement in US3 tasks
    */
-  createBoss(_x: number, _y: number): IBoss {
-    throw new Error('EntityFactory.createBoss not yet implemented');
+  createBoss(
+    x: number,
+    y: number,
+    playerRef: Phaser.Physics.Arcade.Sprite,
+    onShootProjectile?: (projectile: IBossProjectile) => void
+  ): IBoss {
+    return new Boss(this.scene, x, y, playerRef, onShootProjectile);
   }
 
   /**

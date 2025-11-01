@@ -23,6 +23,9 @@ export class VictoryScene extends Phaser.Scene {
     const centerX = this.cameras.main.width / 2;
     const centerY = this.cameras.main.height / 2;
 
+    // Fade in from black
+    this.cameras.main.fadeIn(1000, 0, 0, 0);
+
     // Background with celebratory color
     const overlay = this.add.rectangle(
       0,

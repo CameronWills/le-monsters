@@ -34,6 +34,7 @@ export class PreloadScene extends Phaser.Scene {
   create(): void {
     console.log('[PreloadScene] Assets loaded!');
     this.createAnimations();
+    this.createParticleTexture();
 
     // Transition to Main Menu
     this.time.delayedCall(500, () => {
@@ -138,5 +139,17 @@ export class PreloadScene extends Phaser.Scene {
     // Animations will be registered when we have actual sprite sheets
     // AnimationManager.registerAllAnimations(this);
     console.log('[PreloadScene] Animations registered (placeholder)');
+  }
+
+  /**
+   * Create particle texture for effects
+   */
+  private createParticleTexture(): void {
+    const graphics = this.add.graphics();
+    graphics.fillStyle(0xffffff, 1);
+    graphics.fillCircle(4, 4, 4);
+    graphics.generateTexture('particle', 8, 8);
+    graphics.destroy();
+    console.log('[PreloadScene] Particle texture created');
   }
 }

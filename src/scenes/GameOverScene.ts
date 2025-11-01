@@ -23,6 +23,9 @@ export class GameOverScene extends Phaser.Scene {
     const centerX = this.cameras.main.width / 2;
     const centerY = this.cameras.main.height / 2;
 
+    // Fade in from black
+    this.cameras.main.fadeIn(500, 0, 0, 0);
+
     // Dark overlay background
     const overlay = this.add.rectangle(
       0,

@@ -122,7 +122,7 @@ Hand-drawn colouring-in aesthetic appealing to ages 7-8.
 
 - **Arrow Keys / WASD**: Move Hugo
 - **Spacebar**: Jump
-- **Shift**: Shoot (when wizard hat collected)
+- **X**: Shoot (when wizard hat collected)
 - **ESC**: Pause
 
 ## 📝 Implementation Status
@@ -140,8 +140,46 @@ Hand-drawn colouring-in aesthetic appealing to ages 7-8.
 - BootScene implementation
 - Manager and factory stubs
 
-### 🚧 Phase 3: User Story 1 - Core Gameplay (In Progress)
-Next: Asset loading and PreloadScene
+### ✅ Phase 3: Core Gameplay (Complete)
+- PreloadScene with asset loading
+- Player entity with movement, jumping, physics
+- Platform collision and world boundaries
+- Coin collection system
+- Checkpoint system with respawn
+- Lives and death mechanics
+- Camera following
+- HUD display
+
+### ✅ Phase 4: Menu System (Complete)
+- Main Menu scene
+- Game Over scene
+- Pause scene
+- Victory scene
+- About scene
+
+### ✅ Phase 5: Combat System (Complete)
+- Enemy Birds with patrol and projectile dropping
+- Enemy Sharks with vertical patrol
+- Wizard Hat power-up collectible
+- Player shooting system
+- Collision detection for all combat entities
+
+### ✅ Phase 6: Boss Battle (Complete)
+- Boss entity with health system (10 HP)
+- Burst attack pattern (5 projectiles)
+- Boss projectiles targeting player
+- Victory condition on boss defeat
+- Boss health bar display
+
+### ✅ Phase 7: Polish (Complete)
+- Camera shake on impacts
+- Particle explosion effects on enemy death
+- Boss health bar HUD integration
+- Smooth fade transitions between scenes
+- Audio system with music and SFX
+- Complete gameplay loop from menu to victory
+
+🎉 **Game is fully playable!** All core features and polish have been implemented.
 
 ## 🤝 Contributing
 
