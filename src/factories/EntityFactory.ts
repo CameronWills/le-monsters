@@ -12,6 +12,8 @@ import { Checkpoint } from '../entities/Checkpoint';
 import { EnemyBird } from '../entities/EnemyBird';
 import { EnemyShark } from '../entities/EnemyShark';
 import { EnemyProjectile } from '../entities/EnemyProjectile';
+import { PowerUpWizardHat } from '../entities/PowerUpWizardHat';
+import { PlayerProjectile } from '../entities/PlayerProjectile';
 import type {
   IPlayer,
   IEnemyBird,
@@ -98,10 +100,9 @@ export class EntityFactory {
 
   /**
    * Create wizard hat power-up
-   * TODO: Implement in US2 tasks
    */
-  createWizardHat(_x: number, _y: number): IPowerUpWizardHat {
-    throw new Error('EntityFactory.createWizardHat not yet implemented');
+  createWizardHat(x: number, y: number): IPowerUpWizardHat {
+    return new PowerUpWizardHat(this.scene, x, y);
   }
 
   /**
@@ -140,25 +141,13 @@ export class EntityFactory {
 
   /**
    * Create player projectile (with pooling)
-   * TODO: Implement in US2 tasks
    */
   createPlayerProjectile(
     x: number,
     y: number,
     direction: 1 | -1
   ): IPlayerProjectile {
-    // Check pool for inactive projectile
-    const pooled = this.playerProjectilePool.find((p) => !p.isActive);
-    if (pooled) {
-      // Reuse from pool
-      // pooled.reset(x, y, direction);
-      // return pooled;
-    }
-
-    // Pool empty, create new (will be added to pool later)
-    throw new Error(
-      'EntityFactory.createPlayerProjectile not yet implemented'
-    );
+    return new PlayerProjectile(this.scene, x, y, direction);
   }
 
   /**

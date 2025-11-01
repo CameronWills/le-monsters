@@ -18,6 +18,8 @@ import { Checkpoint } from '../entities/Checkpoint';
 import { EnemyBird } from '../entities/EnemyBird';
 import { EnemyShark } from '../entities/EnemyShark';
 import { EnemyProjectile } from '../entities/EnemyProjectile';
+import { PowerUpWizardHat } from '../entities/PowerUpWizardHat';
+import { PlayerProjectile } from '../entities/PlayerProjectile';
 
 export class GameScene extends Phaser.Scene {
   private levelData!: ILevelData;
@@ -35,6 +37,8 @@ export class GameScene extends Phaser.Scene {
   private birds!: Phaser.GameObjects.Group;
   private sharks!: Phaser.GameObjects.Group;
   private enemyProjectiles!: Phaser.GameObjects.Group;
+  private wizardHats!: Phaser.GameObjects.Group;
+  private playerProjectiles!: Phaser.GameObjects.Group;
 
   // Death/respawn state
   private isDead = false;
@@ -117,7 +121,18 @@ export class GameScene extends Phaser.Scene {
       }
 
       if (this.inputManager.isShootPressed()) {
-        // Shooting will be implemented in Phase 4 (US2)
+        const projectile = this.player.shoot();
+        if (projectile) {
+          // Create projectile using factory
+          const playerProjectile = this.entityFactory.createPlayerProjectile(
+            this.player.sprite.x + (this.player.facingDirection * 20),
+            this.player.sprite.y,
+            this.player.facingDirection
+          ) as PlayerProjectile;
+          
+          this.playerProjectiles.add(playerProjectile.sprite);
+          this.audioManager.playSfx('shoot');
+        }
       }
 
       this.player.update(delta);
@@ -168,6 +183,12 @@ export class GameScene extends Phaser.Scene {
     });
     this.enemyProjectiles = this.add.group({
       runChildUpdate: true, // Enable update() calls for projectiles
+    });
+    this.wizardHats = this.add.group({
+      runChildUpdate: true, // Enable update() calls for power-ups
+    });
+    this.playerProjectiles = this.add.group({
+      runChildUpdate: true, // Enable update() calls for player projectiles
     });
 
     console.log('[GameScene] Groups created');
@@ -221,6 +242,17 @@ export class GameScene extends Phaser.Scene {
           enemyData.patrolEnd || enemyData.y + 100
         ) as EnemyShark;
         this.sharks.add(shark.sprite);
+      }
+    });
+
+    // Spawn power-ups (wizard hats)
+    this.levelData.powerUps.forEach((powerUpData) => {
+      if (powerUpData.type === 'wizard-hat') {
+        const wizardHat = this.entityFactory.createWizardHat(
+          powerUpData.x,
+          powerUpData.y
+        ) as PowerUpWizardHat;
+        this.wizardHats.add(wizardHat.sprite);
       }
     });
 
@@ -281,6 +313,33 @@ export class GameScene extends Phaser.Scene {
       this.player.sprite,
       this.enemyProjectiles,
       this.handlePlayerHitByProjectile,
+      undefined,
+      this
+    );
+
+    // Player collects wizard hat
+    this.physics.add.overlap(
+      this.player.sprite,
+      this.wizardHats,
+      this.handleWizardHatCollection,
+      undefined,
+      this
+    );
+
+    // Player projectile hits bird
+    this.physics.add.overlap(
+      this.playerProjectiles,
+      this.birds,
+      this.handlePlayerProjectileHitBird,
+      undefined,
+      this
+    );
+
+    // Player projectile hits shark
+    this.physics.add.overlap(
+      this.playerProjectiles,
+      this.sharks,
+      this.handlePlayerProjectileHitShark,
       undefined,
       this
     );
@@ -387,6 +446,67 @@ export class GameScene extends Phaser.Scene {
     // Player takes damage, projectile destroyed
     this.handlePlayerDeath();
     projectile.destroy();
+  }
+
+  private handleWizardHatCollection(
+    _playerBody: unknown,
+    wizardHatSprite: unknown
+  ): void {
+    // Get sprite
+    const sprite = wizardHatSprite as Phaser.Physics.Arcade.Sprite;
+    
+    // Find wizard hat entity from sprite
+    const wizardHat = sprite.getData('entity') as PowerUpWizardHat;
+    if (!wizardHat || wizardHat.isCollected) return;
+
+    // Collect the power-up
+    wizardHat.collect(this.player);
+
+    console.log('[GameScene] Wizard hat collected');
+  }
+
+  private handlePlayerProjectileHitBird(
+    projectileSprite: unknown,
+    birdSprite: unknown
+  ): void {
+    // Get sprites
+    const pSprite = projectileSprite as Phaser.Physics.Arcade.Sprite;
+    const bSprite = birdSprite as Phaser.Physics.Arcade.Sprite;
+    
+    // Find entities from sprites
+    const projectile = pSprite.getData('entity') as PlayerProjectile;
+    const bird = bSprite.getData('entity') as EnemyBird;
+    
+    if (!projectile || !projectile.isActive) return;
+    if (!bird || !bird.isAlive) return;
+
+    // Destroy both
+    projectile.destroy();
+    bird.die();
+
+    console.log('[GameScene] Player projectile hit bird');
+  }
+
+  private handlePlayerProjectileHitShark(
+    projectileSprite: unknown,
+    sharkSprite: unknown
+  ): void {
+    // Get sprites
+    const pSprite = projectileSprite as Phaser.Physics.Arcade.Sprite;
+    const sSprite = sharkSprite as Phaser.Physics.Arcade.Sprite;
+    
+    // Find entities from sprites
+    const projectile = pSprite.getData('entity') as PlayerProjectile;
+    const shark = sSprite.getData('entity') as EnemyShark;
+    
+    if (!projectile || !projectile.isActive) return;
+    if (!shark || !shark.isAlive) return;
+
+    // Destroy both
+    projectile.destroy();
+    shark.die();
+
+    console.log('[GameScene] Player projectile hit shark');
   }
 
   private handlePlayerDeath(): void {

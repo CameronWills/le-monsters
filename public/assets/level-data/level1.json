@@ -127,7 +127,13 @@
       "y": 550
     }
   ],
-  "powerUps": [],
+  "powerUps": [
+    {
+      "type": "wizard-hat",
+      "x": 1500,
+      "y": 750
+    }
+  ],
   "bossArena": {
     "x": 2800,
     "y": 400,
