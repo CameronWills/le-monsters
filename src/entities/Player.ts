@@ -31,8 +31,12 @@ export class Player implements IPlayer {
     this.scene = scene;
     this.id = `player-${Date.now()}`;
 
-    // Create sprite with physics body
-    this.sprite = scene.physics.add.sprite(x, y, 'player');
+    // Create sprite with physics body using the running spritesheet
+    this.sprite = scene.physics.add.sprite(x, y, 'player-running');
+    
+    // Set sprite dimensions to match frame size (46x64)
+    this.sprite.setSize(46, 64);
+    this.sprite.setDisplaySize(46, 64);
     
     // Store reference to this entity in sprite data
     this.sprite.setData('entity', this);
@@ -52,6 +56,11 @@ export class Player implements IPlayer {
     if (direction !== 0) {
       this.facingDirection = direction;
       this.sprite.setFlipX(direction === -1);
+      
+      // Play running animation
+      if (this.sprite.anims.currentAnim?.key !== 'player-run') {
+        this.sprite.play('player-run');
+      }
     }
 
     const targetVelocityX = direction * GAME_CONFIG.PLAYER_SPEED;
@@ -74,6 +83,10 @@ export class Player implements IPlayer {
    */
   stop(): void {
     this.sprite.setVelocityX(0);
+    
+    // Stop running animation and show first frame (idle)
+    this.sprite.stop();
+    this.sprite.setFrame(0);
   }
 
   /**

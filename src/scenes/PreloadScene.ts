@@ -121,6 +121,12 @@ export class PreloadScene extends Phaser.Scene {
 
     // Player sprite
     this.load.image('player', 'assets/sprites/player.png');
+    
+    // Player running animation spritesheet
+    this.load.spritesheet('player-running', 'assets/sprites/player-running.png', {
+      frameWidth: 46,
+      frameHeight: 64
+    });
 
     // For now, we'll create placeholder graphics in code
     // In a real implementation, you would load sprite sheets:
@@ -139,9 +145,15 @@ export class PreloadScene extends Phaser.Scene {
    * Register sprite animations
    */
   private createAnimations(): void {
-    // Animations will be registered when we have actual sprite sheets
-    // AnimationManager.registerAllAnimations(this);
-    console.log('[PreloadScene] Animations registered (placeholder)');
+    // Create player running animation
+    this.anims.create({
+      key: 'player-run',
+      frames: this.anims.generateFrameNumbers('player-running', { start: 0, end: 3 }),
+      frameRate: 10,
+      repeat: -1
+    });
+    
+    console.log('[PreloadScene] Animations registered');
   }
 
   /**
