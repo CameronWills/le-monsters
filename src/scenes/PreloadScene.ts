@@ -119,6 +119,9 @@ export class PreloadScene extends Phaser.Scene {
     // Level data
     this.load.json('level1', 'assets/level-data/level1.json');
 
+    // Player sprite
+    this.load.image('player', 'assets/sprites/player.png');
+
     // For now, we'll create placeholder graphics in code
     // In a real implementation, you would load sprite sheets:
     // this.load.spritesheet(SPRITE_KEYS.PLAYER, 'assets/sprites/hugo.png', {

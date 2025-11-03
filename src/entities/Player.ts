@@ -4,7 +4,7 @@
  */
 
 import Phaser from 'phaser';
-import { GAME_CONFIG, ANIM_KEYS } from '../config/constants';
+import { GAME_CONFIG } from '../config/constants';
 import type { IPlayer, IEnemy, ICheckpoint, IPlayerProjectile } from '../types/entities';
 
 export class Player implements IPlayer {
@@ -32,13 +32,10 @@ export class Player implements IPlayer {
     this.id = `player-${Date.now()}`;
 
     // Create sprite with physics body
-    this.sprite = scene.physics.add.sprite(x, y, 'player-placeholder');
+    this.sprite = scene.physics.add.sprite(x, y, 'player');
     
     // Store reference to this entity in sprite data
     this.sprite.setData('entity', this);
-    
-    // Create placeholder graphics (orange rectangle for Hugo)
-    this.createPlaceholderGraphics();
 
     // Setup physics body
     this.sprite.setCollideWorldBounds(true);
@@ -46,17 +43,6 @@ export class Player implements IPlayer {
     this.sprite.setDrag(GAME_CONFIG.PLAYER_ACCELERATION, 0);
 
     console.log('[Player] Created at', x, y);
-  }
-
-  /**
-   * Create placeholder graphics (until we have real sprites)
-   */
-  private createPlaceholderGraphics(): void {
-    const graphics = this.scene.add.graphics();
-    graphics.fillStyle(0xff6600, 1); // Orange for Hugo
-    graphics.fillRect(0, 0, 64, 64);
-    graphics.generateTexture('player-placeholder', 64, 64);
-    graphics.destroy();
   }
 
   /**
