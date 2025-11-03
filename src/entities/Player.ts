@@ -57,9 +57,15 @@ export class Player implements IPlayer {
       this.facingDirection = direction;
       this.sprite.setFlipX(direction === -1);
       
-      // Play running animation
-      if (this.sprite.anims.currentAnim?.key !== 'player-run') {
-        this.sprite.play('player-run');
+      // Play running animation if not already playing
+      if (!this.sprite.anims.isPlaying || this.sprite.anims.currentAnim?.key !== 'player-run') {
+        this.sprite.play('player-run', true);
+      }
+    } else {
+      // Stop running animation and show first frame (idle) when not moving
+      if (this.sprite.anims.isPlaying) {
+        this.sprite.stop();
+        this.sprite.setFrame(0);
       }
     }
 
