@@ -483,15 +483,28 @@ export class GameScene extends Phaser.Scene {
   }
 
   private setupCollisions(): void {
+    // Debug: Check what's in the platforms group
+    console.log('[GameScene] Setting up collisions');
+    console.log('[GameScene] Platforms in group:', this.platforms.getChildren().length);
+    console.log('[GameScene] Frogs in group:', this.frogs.getChildren().length);
+    
     // Player collides with platforms
-    this.physics.add.collider(this.player.sprite, this.platforms);
+    this.physics.add.collider(this.player.sprite, this.platforms.getChildren());
     
     // Player collides with moving platforms (player inherits platform velocity)
-    this.physics.add.collider(this.player.sprite, this.movingPlatforms);
+    this.physics.add.collider(this.player.sprite, this.movingPlatforms.getChildren());
 
     // Frogs collide with platforms (ground-based enemy)
-    this.physics.add.collider(this.frogs, this.platforms);
-    this.physics.add.collider(this.frogs, this.movingPlatforms);
+    const frogPlatformCollider = this.physics.add.collider(
+      this.frogs.getChildren(),
+      this.platforms.getChildren()
+    );
+    const frogMovingPlatformCollider = this.physics.add.collider(
+      this.frogs.getChildren(),
+      this.movingPlatforms.getChildren()
+    );
+    console.log('[GameScene] Frog-platform collider created:', !!frogPlatformCollider);
+    console.log('[GameScene] Frog-moving-platform collider created:', !!frogMovingPlatformCollider);
 
     // Enemy projectiles (eggs) collide with platforms and break
     this.physics.add.collider(

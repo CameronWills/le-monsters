@@ -42,12 +42,13 @@ export class EnemyFrog implements IEnemyFrog {
     // Create sprite
     this.sprite = scene.physics.add.sprite(x, y, 'frog-placeholder');
     this.sprite.setOrigin(0.5, 0.5);
-    this.sprite.setSize(64, 64);
-
-    // Enable gravity for ground-based movement
-    if (this.sprite.body) {
-      (this.sprite.body as Phaser.Physics.Arcade.Body).setAllowGravity(true);
-    }
+    
+    // Setup physics body properly - ensure body exists first
+    scene.physics.world.enable(this.sprite);
+    const body = this.sprite.body as Phaser.Physics.Arcade.Body;
+    body.setSize(64, 64);
+    body.setAllowGravity(true);
+    body.setCollideWorldBounds(false); // Allow falling off world (handled by game over)
 
     // Store reference to this entity
     this.sprite.setData('entity', this);
@@ -58,6 +59,9 @@ export class EnemyFrog implements IEnemyFrog {
     }
 
     console.log(`[EnemyFrog] Created at (${x}, ${y})`);
+    console.log(`[EnemyFrog] Body enabled:`, !!this.sprite.body);
+    console.log(`[EnemyFrog] Gravity enabled:`, body.allowGravity);
+    console.log(`[EnemyFrog] Body size:`, body.width, body.height);
   }
 
   /**
