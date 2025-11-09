@@ -1,10 +1,11 @@
 /**
- * Enemy Projectile Entity
- * Projectiles fired by enemies (birds and boss)
+ * Enemy Projectile Entity (Bird Egg)
+ * Cream-colored oval eggs dropped by birds
  */
 
 import Phaser from 'phaser';
 import type { IEnemyProjectile } from '../types/entities';
+import { GAME_CONFIG } from '../config/constants';
 
 export class EnemyProjectile implements IEnemyProjectile {
   readonly sprite: Phaser.Physics.Arcade.Sprite;
@@ -31,17 +32,20 @@ export class EnemyProjectile implements IEnemyProjectile {
     this.speed = Math.sqrt(velocityX * velocityX + velocityY * velocityY);
     this.direction = { x: velocityX / this.speed, y: velocityY / this.speed };
 
-    // Create placeholder texture if needed
-    if (!scene.textures.exists('enemy-projectile-placeholder')) {
-      this.createPlaceholderTexture(scene);
+    // Create bird egg placeholder texture if needed
+    if (!scene.textures.exists('bird-egg-placeholder')) {
+      this.createEggTexture(scene);
     }
 
-    // Create sprite
-    this.sprite = scene.physics.add.sprite(x, y, 'enemy-projectile-placeholder');
-    this.sprite.setSize(12, 12);
-    (this.sprite.body as Phaser.Physics.Arcade.Body).setAllowGravity(false);
+    // Create sprite (1.5x larger than old projectile = 18x18)
+    this.sprite = scene.physics.add.sprite(x, y, 'bird-egg-placeholder');
+    this.sprite.setSize(18, 22); // Oval shape
+    this.sprite.setDisplaySize(18 * GAME_CONFIG.EGG_SCALE, 22 * GAME_CONFIG.EGG_SCALE);
+    
+    // Enable gravity (eggs fall like real objects)
+    (this.sprite.body as Phaser.Physics.Arcade.Body).setAllowGravity(true);
 
-    // Set velocity
+    // Set initial velocity
     this.sprite.setVelocity(velocityX, velocityY);
 
     // Store reference
@@ -50,13 +54,22 @@ export class EnemyProjectile implements IEnemyProjectile {
   }
 
   /**
-   * Create placeholder texture (red circle)
+   * Create bird egg texture (cream-colored oval)
    */
-  private createPlaceholderTexture(scene: Phaser.Scene): void {
+  private createEggTexture(scene: Phaser.Scene): void {
     const graphics = scene.add.graphics();
-    graphics.fillStyle(0xff0000, 1); // Red for enemy projectile
-    graphics.fillCircle(6, 6, 6);
-    graphics.generateTexture('enemy-projectile-placeholder', 12, 12);
+    
+    // Cream/beige color (#FFF8DC)
+    graphics.fillStyle(0xfff8dc, 1);
+    
+    // Draw oval shape (taller than wide)
+    graphics.fillEllipse(12, 14, 18, 22);
+    
+    // Add slight shading on bottom
+    graphics.fillStyle(0xf5e6c8, 0.5);
+    graphics.fillEllipse(12, 18, 14, 12);
+    
+    graphics.generateTexture('bird-egg-placeholder', 24, 28);
     graphics.destroy();
   }
 
@@ -83,15 +96,20 @@ export class EnemyProjectile implements IEnemyProjectile {
       return true;
     }
 
-    // Destroy if out of world bounds (with margin)
+    // Destroy if egg hits the ground (check if below world height)
     const bounds = this.scene.physics.world.bounds;
+    if (this.sprite.y > bounds.height) {
+      console.log('[EnemyProjectile] Egg fell below world');
+      return true;
+    }
+
+    // Destroy if out of world bounds horizontally (with margin)
     const margin = 100;
     
     return (
       this.sprite.x < bounds.x - margin ||
       this.sprite.x > bounds.x + bounds.width + margin ||
-      this.sprite.y < bounds.y - margin ||
-      this.sprite.y > bounds.y + bounds.height + margin
+      this.sprite.y < bounds.y - margin
     );
   }
 

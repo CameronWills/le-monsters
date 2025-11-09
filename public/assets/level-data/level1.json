@@ -124,6 +124,21 @@
       "y": 950,
       "patrolStart": 1700,
       "patrolEnd": 1900
+    },
+    {
+      "type": "frog",
+      "x": 250,
+      "y": 950
+    },
+    {
+      "type": "frog",
+      "x": 1500,
+      "y": 950
+    },
+    {
+      "type": "frog",
+      "x": 2400,
+      "y": 950
     }
   ],
   "coins": [

@@ -11,6 +11,7 @@ import { Coin } from '../entities/Coin';
 import { Checkpoint } from '../entities/Checkpoint';
 import { EnemyBird } from '../entities/EnemyBird';
 import { EnemyShark } from '../entities/EnemyShark';
+import { EnemyFrog } from '../entities/EnemyFrog';
 import { EnemyProjectile } from '../entities/EnemyProjectile';
 import { PowerUpWizardHat } from '../entities/PowerUpWizardHat';
 import { PlayerProjectile } from '../entities/PlayerProjectile';
@@ -20,6 +21,7 @@ import type {
   IPlayer,
   IEnemyBird,
   IEnemyShark,
+  IEnemyFrog,
   IBoss,
   ICheckpoint,
   IPowerUpWizardHat,
@@ -83,6 +85,18 @@ export class EntityFactory {
     patrolEnd: number
   ): IEnemyShark {
     return new EnemyShark(this.scene, x, y, patrolStart, patrolEnd);
+  }
+
+  /**
+   * Create frog enemy
+   */
+  createFrog(
+    x: number,
+    y: number,
+    playerRef: Phaser.Physics.Arcade.Sprite,
+    platforms: Phaser.GameObjects.Group
+  ): IEnemyFrog {
+    return new EnemyFrog(this.scene, x, y, playerRef, platforms);
   }
 
   /**

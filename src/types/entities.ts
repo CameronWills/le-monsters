@@ -46,7 +46,7 @@ export interface IPlayer extends IEntity {
  * Base enemy interface
  */
 export interface IEnemy extends IEntity {
-  type: 'enemy-bird' | 'enemy-shark';
+  type: 'enemy-bird' | 'enemy-shark' | 'enemy-frog';
   isAlive: boolean;
   spawnPosition: { x: number; y: number };
   takeDamage(): void;
@@ -77,6 +77,15 @@ export interface IEnemyShark extends IEnemy {
   patrolDirection: 1 | -1;
   reverseDirection(): void;
   isAtBoundary(): boolean;
+}
+
+/**
+ * Frog enemy interface
+ */
+export interface IEnemyFrog extends IEnemy {
+  type: 'enemy-frog';
+  jumpTimer: number;
+  readonly jumpInterval: number;
 }
 
 /**
@@ -266,7 +275,7 @@ export interface ICheckpointData {
 }
 
 export interface IEnemyData {
-  type: 'bird' | 'shark';
+  type: 'bird' | 'shark' | 'frog';
   x: number;
   y: number;
   flyDirection?: -1 | 1;

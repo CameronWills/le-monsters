@@ -17,6 +17,7 @@ import { Coin } from '../entities/Coin';
 import { Checkpoint } from '../entities/Checkpoint';
 import { EnemyBird } from '../entities/EnemyBird';
 import { EnemyShark } from '../entities/EnemyShark';
+import { EnemyFrog } from '../entities/EnemyFrog';
 import { EnemyProjectile } from '../entities/EnemyProjectile';
 import { PowerUpWizardHat } from '../entities/PowerUpWizardHat';
 import { PlayerProjectile } from '../entities/PlayerProjectile';
@@ -41,6 +42,7 @@ export class GameScene extends Phaser.Scene {
   private checkpoints!: Phaser.GameObjects.Group;
   private birds!: Phaser.GameObjects.Group;
   private sharks!: Phaser.GameObjects.Group;
+  private frogs!: Phaser.GameObjects.Group;
   private enemyProjectiles!: Phaser.GameObjects.Group;
   private wizardHats!: Phaser.GameObjects.Group;
   private playerProjectiles!: Phaser.GameObjects.Group;
@@ -283,6 +285,9 @@ export class GameScene extends Phaser.Scene {
     this.sharks = this.add.group({
       runChildUpdate: true, // Enable update() calls for sharks
     });
+    this.frogs = this.add.group({
+      runChildUpdate: true, // Enable update() calls for frogs
+    });
     this.enemyProjectiles = this.add.group({
       runChildUpdate: true, // Enable update() calls for projectiles
     });
@@ -326,7 +331,13 @@ export class GameScene extends Phaser.Scene {
       this.checkpoints.add(checkpoint.sprite);
     });
 
-    // Spawn enemy birds
+    // Spawn player BEFORE enemies (frogs need player reference)
+    this.player = this.entityFactory.createPlayer(
+      this.levelData.playerStart.x,
+      this.levelData.playerStart.y
+    ) as Player;
+
+    // Spawn enemy birds, sharks, and frogs
     this.levelData.enemies.forEach((enemyData) => {
       if (enemyData.type === 'bird') {
         const bird = this.entityFactory.createBird(
@@ -347,6 +358,14 @@ export class GameScene extends Phaser.Scene {
           enemyData.patrolEnd || enemyData.y + 100
         ) as EnemyShark;
         this.sharks.add(shark.sprite);
+      } else if (enemyData.type === 'frog') {
+        const frog = this.entityFactory.createFrog(
+          enemyData.x,
+          enemyData.y,
+          this.player.sprite,
+          this.platforms
+        ) as EnemyFrog;
+        this.frogs.add(frog.sprite);
       }
     });
 
@@ -360,12 +379,6 @@ export class GameScene extends Phaser.Scene {
         this.wizardHats.add(wizardHat.sprite);
       }
     });
-
-    // Spawn player
-    this.player = this.entityFactory.createPlayer(
-      this.levelData.playerStart.x,
-      this.levelData.playerStart.y
-    ) as Player;
 
     // Spawn boss in arena
     if (this.levelData.bossArena) {
@@ -456,6 +469,18 @@ export class GameScene extends Phaser.Scene {
     // Player collides with platforms
     this.physics.add.collider(this.player.sprite, this.platforms);
 
+    // Frogs collide with platforms (ground-based enemy)
+    this.physics.add.collider(this.frogs, this.platforms);
+
+    // Enemy projectiles (eggs) collide with platforms and break
+    this.physics.add.collider(
+      this.enemyProjectiles,
+      this.platforms,
+      this.handleEggHitPlatform,
+      undefined,
+      this
+    );
+
     // Coin collection
     this.physics.add.overlap(
       this.player.sprite,
@@ -492,6 +517,15 @@ export class GameScene extends Phaser.Scene {
       this
     );
 
+    // Player hit by enemy frog
+    this.physics.add.overlap(
+      this.player.sprite,
+      this.frogs,
+      this.handlePlayerHitByFrog,
+      undefined,
+      this
+    );
+
     // Player hit by enemy projectile
     this.physics.add.overlap(
       this.player.sprite,
@@ -524,6 +558,15 @@ export class GameScene extends Phaser.Scene {
       this.playerProjectiles,
       this.sharks,
       this.handlePlayerProjectileHitShark,
+      undefined,
+      this
+    );
+
+    // Player projectile hits frog
+    this.physics.add.overlap(
+      this.playerProjectiles,
+      this.frogs,
+      this.handlePlayerProjectileHitFrog,
       undefined,
       this
     );
@@ -670,6 +713,37 @@ export class GameScene extends Phaser.Scene {
     }
   }
 
+  private handlePlayerHitByFrog(
+    _playerBody: unknown,
+    frogSprite: unknown
+  ): void {
+    if (this.isDead) return; // Already dead, ignore
+
+    // Get sprite
+    const fSprite = frogSprite as Phaser.Physics.Arcade.Sprite;
+    
+    // Find frog entity from sprite
+    const frog = fSprite.getData('entity') as EnemyFrog;
+    if (!frog || !frog.isAlive) return;
+
+    // Check if player is stomping on frog (landing on top)
+    const isStomping = this.player.sprite.body!.velocity.y > 0 && // Player moving down
+                       this.player.sprite.y < fSprite.y; // Player is above frog
+
+    if (isStomping) {
+      // Player stomps frog - frog dies, player bounces
+      frog.die();
+      this.player.sprite.setVelocityY(-300); // Bounce up
+      this.audioManager.playSfx('stomp');
+      console.log('[GameScene] Player stomped frog');
+    } else {
+      // Player hit from side/below - player takes damage
+      this.handlePlayerDeath();
+      frog.die();
+      console.log('[GameScene] Player hit by frog (not stomping)');
+    }
+  }
+
   private handlePlayerHitByProjectile(
     _playerBody: unknown,
     projectileSprite: unknown
@@ -686,6 +760,30 @@ export class GameScene extends Phaser.Scene {
     // Player takes damage, projectile destroyed
     this.handlePlayerDeath();
     projectile.destroy();
+  }
+
+  private handleEggHitPlatform(
+    eggSprite: unknown,
+    _platformSprite: unknown
+  ): void {
+    // Get egg sprite
+    const sprite = eggSprite as Phaser.Physics.Arcade.Sprite;
+    
+    // Find egg entity from sprite
+    const egg = sprite.getData('entity') as EnemyProjectile;
+    if (!egg || !egg.isActive) return;
+
+    // Egg breaks on impact with platform
+    // Create small particle effect (cream color)
+    this.createParticleExplosion(sprite.x, sprite.y, 0xfff8dc);
+    
+    // Play egg impact sound if available
+    this.audioManager.playSfx('egg-impact');
+    
+    // Destroy egg
+    egg.destroy();
+    
+    console.log('[GameScene] Egg hit platform and broke');
   }
 
   private handleWizardHatCollection(
@@ -753,6 +851,31 @@ export class GameScene extends Phaser.Scene {
     shark.die();
 
     console.log('[GameScene] Player projectile hit shark');
+  }
+
+  private handlePlayerProjectileHitFrog(
+    projectileSprite: unknown,
+    frogSprite: unknown
+  ): void {
+    // Get sprites
+    const pSprite = projectileSprite as Phaser.Physics.Arcade.Sprite;
+    const fSprite = frogSprite as Phaser.Physics.Arcade.Sprite;
+    
+    // Find entities from sprites
+    const projectile = pSprite.getData('entity') as PlayerProjectile;
+    const frog = fSprite.getData('entity') as EnemyFrog;
+    
+    if (!projectile || !projectile.isActive) return;
+    if (!frog || !frog.isAlive) return;
+
+    // Particle effect on frog death (green)
+    this.createParticleExplosion(fSprite.x, fSprite.y, 0x44ff44);
+
+    // Destroy both
+    projectile.destroy();
+    frog.die();
+
+    console.log('[GameScene] Player projectile hit frog');
   }
 
   private handlePlayerHitByBoss(
@@ -887,7 +1010,41 @@ export class GameScene extends Phaser.Scene {
     // Grant invincibility
     this.player.makeInvincible(GAME_CONFIG.PLAYER_INVINCIBILITY_DURATION);
 
+    // Respawn all defeated enemies (per requirements)
+    this.respawnAllEnemies();
+
     console.log('[GameScene] Player respawned at', respawnPos);
+  }
+
+  /**
+   * Respawn all defeated enemies when player respawns
+   */
+  private respawnAllEnemies(): void {
+    // Respawn all birds
+    this.birds.getChildren().forEach((birdSprite) => {
+      const bird = (birdSprite as Phaser.Physics.Arcade.Sprite).getData('entity') as EnemyBird;
+      if (bird && !bird.isAlive) {
+        bird.respawn();
+      }
+    });
+
+    // Respawn all sharks
+    this.sharks.getChildren().forEach((sharkSprite) => {
+      const shark = (sharkSprite as Phaser.Physics.Arcade.Sprite).getData('entity') as EnemyShark;
+      if (shark && !shark.isAlive) {
+        shark.respawn();
+      }
+    });
+
+    // Respawn all frogs
+    this.frogs.getChildren().forEach((frogSprite) => {
+      const frog = (frogSprite as Phaser.Physics.Arcade.Sprite).getData('entity') as EnemyFrog;
+      if (frog && !frog.isAlive) {
+        frog.respawn();
+      }
+    });
+
+    console.log('[GameScene] All enemies respawned');
   }
 
   private handleGameOver(): void {
