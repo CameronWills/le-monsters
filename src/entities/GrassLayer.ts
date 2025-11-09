@@ -25,6 +25,11 @@ export class GrassLayer implements IGrassLayer {
     this.scene = scene;
     this.id = `grass-${Date.now()}-${Math.random()}`;
 
+    // Create placeholder texture if it doesn't exist
+    if (!scene.textures.exists('grass-placeholder')) {
+      this.createPlaceholderTexture(scene);
+    }
+
     // Create TileSprite for grass (repeating texture)
     // Position at ground level, height from constants
     this.sprite = scene.add.tileSprite(
@@ -44,6 +49,26 @@ export class GrassLayer implements IGrassLayer {
     // Instead, grass animation is achieved through texture scrolling in update()
 
     console.log(`[GrassLayer] Created at (${x}, ${y}) with width ${width}`);
+  }
+
+  /**
+   * Create placeholder texture (green grass)
+   */
+  private createPlaceholderTexture(scene: Phaser.Scene): void {
+    const graphics = scene.add.graphics();
+    
+    // Draw green grass blades
+    graphics.fillStyle(0x2ecc71, 1); // Bright green
+    graphics.fillRect(0, 0, 64, GAME_CONFIG.GRASS_HEIGHT);
+    
+    // Add darker green grass details for texture
+    graphics.fillStyle(0x27ae60, 1); // Darker green
+    for (let i = 0; i < 64; i += 8) {
+      graphics.fillRect(i, 0, 2, GAME_CONFIG.GRASS_HEIGHT);
+    }
+    
+    graphics.generateTexture('grass-placeholder', 64, GAME_CONFIG.GRASS_HEIGHT);
+    graphics.destroy();
   }
 
   /**

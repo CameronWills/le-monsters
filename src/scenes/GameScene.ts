@@ -440,7 +440,7 @@ export class GameScene extends Phaser.Scene {
       0,
       0,
       this.levelData.metadata.width,
-      Math.floor(this.levelData.metadata.height * 0.3) // Top 30% of level
+      Math.floor(this.levelData.metadata.height * 0.25) // Top 30% of level
     );
 
     // Create grass layers on top of each platform
@@ -449,7 +449,7 @@ export class GameScene extends Phaser.Scene {
       const grass = new GrassLayer(
         this,
         platformData.x,
-        platformData.y, // Y position at platform top
+        platformData.y, // Y position at platform top minus grass height
         platformData.width
       );
       this.grassLayers.push(grass);
