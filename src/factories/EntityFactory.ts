@@ -4,7 +4,6 @@
  */
 
 import Phaser from 'phaser';
-import { GAME_CONFIG } from '../config/constants';
 import { Player } from '../entities/Player';
 import { Platform } from '../entities/Platform';
 import { MovingPlatform } from '../entities/MovingPlatform';

@@ -5,7 +5,6 @@
 
 import Phaser from 'phaser';
 import type { IPlatform } from '../types/entities';
-import { GAME_CONFIG } from '../config/constants';
 
 export class Platform implements IPlatform {
   readonly sprite: Phaser.Physics.Arcade.Sprite;

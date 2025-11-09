@@ -5,7 +5,6 @@
 
 import Phaser from 'phaser';
 import type { ICheckpoint } from '../types/entities';
-import { GAME_CONFIG } from '../config/constants';
 
 export class Checkpoint implements ICheckpoint {
   readonly sprite: Phaser.Physics.Arcade.Sprite;

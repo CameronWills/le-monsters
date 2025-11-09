@@ -8,8 +8,6 @@ import {
   SCENE_KEYS,
   SPRITE_KEYS,
   AUDIO_KEYS,
-  ANIM_KEYS,
-  ANIMATION_CONFIG,
 } from '../config/constants';
 import { AnimationManager } from '../managers/AnimationManager';
 

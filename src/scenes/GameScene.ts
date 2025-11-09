@@ -24,7 +24,6 @@ import { PowerUpWizardHat } from '../entities/PowerUpWizardHat';
 import { PlayerProjectile } from '../entities/PlayerProjectile';
 import { Boss } from '../entities/Boss';
 import { BossProjectile } from '../entities/BossProjectile';
-import { GrassLayer } from '../entities/GrassLayer';
 import { WaterHazard } from '../entities/WaterHazard';
 import { CloudLayer } from '../entities/CloudLayer';
 
@@ -53,8 +52,7 @@ export class GameScene extends Phaser.Scene {
 
   // Environmental layers (NEW - T039)
   private cloudLayer?: CloudLayer;
-  private grassLayers: GrassLayer[] = [];
-  private waterHazards: WaterHazard[] = [];
+    private waterHazards: WaterHazard[] = [];
 
   // Death/respawn state
   private isDead = false;
@@ -443,18 +441,6 @@ export class GameScene extends Phaser.Scene {
       Math.floor(this.levelData.metadata.height * 0.25) // Top 30% of level
     );
 
-    // Create grass layers on top of each platform
-    // Iterate through platform data and create grass on each one
-    this.levelData.platforms.forEach((platformData) => {
-      const grass = new GrassLayer(
-        this,
-        platformData.x,
-        platformData.y, // Y position at platform top minus grass height
-        platformData.width
-      );
-      this.grassLayers.push(grass);
-    });
-
     // Create water hazards in pits
     // For now, we'll create a few hardcoded water hazards
     // TODO: In US3 (level extension), read water hazard positions from level data
@@ -479,7 +465,7 @@ export class GameScene extends Phaser.Scene {
       this.waterHazards.push(water);
     });
 
-    console.log(`[GameScene] Environmental layers created: ${this.grassLayers.length} grass layers, ${this.waterHazards.length} water hazards`);
+    console.log(`[GameScene] Environmental layers created: ${this.waterHazards.length} water hazards`);
   }
 
   private setupCollisions(): void {

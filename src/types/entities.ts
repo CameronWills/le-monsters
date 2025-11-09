@@ -210,15 +210,6 @@ export interface IEnvironmentalLayer {
 }
 
 /**
- * Grass layer interface
- * Animated grass visual along ground surfaces
- */
-export interface IGrassLayer extends IEnvironmentalLayer {
-  readonly sprite: Phaser.GameObjects.TileSprite;
-  type: 'grass-layer';
-}
-
-/**
  * Water hazard interface
  * Animated water in pit areas (causes damage/respawn)
  */
