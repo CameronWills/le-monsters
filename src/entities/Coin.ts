@@ -1,6 +1,6 @@
 /**
  * Coin Entity
- * Collectible coins for score tracking
+ * Collectible coins that add to score
  */
 
 import Phaser from 'phaser';
@@ -26,7 +26,7 @@ export class Coin implements ICoin {
 
     // Create sprite
     this.sprite = scene.physics.add.sprite(x, y, 'coin-placeholder');
-    this.sprite.setSize(24, 24);
+    this.sprite.setSize(28, 28);
     
     // Store reference to this entity in sprite data
     this.sprite.setData('entity', this);

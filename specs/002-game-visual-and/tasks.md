@@ -25,10 +25,10 @@
 - [ ] T005 [P] Create cloud sprite for parallax background (seamless tile)
 - [ ] T006 [P] Create bird egg sprite (oval, cream-colored, 1.5x original dropping size)
 - [ ] T007 [P] Record audio files: frog-jump.ogg, frog-defeat.ogg, egg-impact.ogg
-- [ ] T008 Update `src/config/constants.ts` with new constants (SPRITE_SCALE: 1.2, EGG_SCALE: 1.5, FROG_JUMP_INTERVAL: 2000, FROG_JUMP_SPEED, FROG_JUMP_HEIGHT, FROG_EDGE_CHECK_DISTANCE, GRASS_HEIGHT: 30, CLOUD_SCROLL_FACTOR: 0.5)
-- [ ] T009 [P] Add new animation keys to `src/config/constants.ts` (ANIM_KEYS.ENEMIES.FROG_STATIONARY, FROG_JUMPING, ANIM_KEYS.ENVIRONMENTAL.GRASS_WAVE, WATER_WAVE)
-- [ ] T010 [P] Add new sprite keys to `src/config/constants.ts` (SPRITE_KEYS.FROG, GRASS, WATER, CLOUDS, BIRD_EGG)
-- [ ] T011 [P] Add new audio keys to `src/config/constants.ts` (AUDIO_KEYS.SFX.FROG_JUMP, FROG_DEFEAT, EGG_IMPACT)
+- [X] T008 Update `src/config/constants.ts` with new constants (SPRITE_SCALE: 1.2, EGG_SCALE: 1.5, FROG_JUMP_INTERVAL: 2000, FROG_JUMP_SPEED, FROG_JUMP_HEIGHT, FROG_EDGE_CHECK_DISTANCE, GRASS_HEIGHT: 30, CLOUD_SCROLL_FACTOR: 0.5)
+- [X] T009 [P] Add new animation keys to `src/config/constants.ts` (ANIM_KEYS.ENEMIES.FROG_STATIONARY, FROG_JUMPING, ANIM_KEYS.ENVIRONMENTAL.GRASS_WAVE, WATER_WAVE)
+- [X] T010 [P] Add new sprite keys to `src/config/constants.ts` (SPRITE_KEYS.FROG, GRASS, WATER, CLOUDS, BIRD_EGG)
+- [X] T011 [P] Add new audio keys to `src/config/constants.ts` (AUDIO_KEYS.SFX.FROG_JUMP, FROG_DEFEAT, EGG_IMPACT)
 
 ---
 
@@ -38,20 +38,20 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T012 Update `src/scenes/PreloadScene.ts` to load all scaled sprite sheets (120% versions or maintain original keys with runtime scaling)
-- [ ] T013 Update `src/scenes/PreloadScene.ts` to load frog enemy sprite sheet
-- [ ] T014 [P] Update `src/scenes/PreloadScene.ts` to load grass-layer sprite sheet
-- [ ] T015 [P] Update `src/scenes/PreloadScene.ts` to load water-animation sprite sheet
-- [ ] T016 [P] Update `src/scenes/PreloadScene.ts` to load clouds sprite/tile
-- [ ] T017 [P] Update `src/scenes/PreloadScene.ts` to load bird-egg sprite sheet
-- [ ] T018 [P] Update `src/scenes/PreloadScene.ts` to load new audio files (frog-jump.ogg, frog-defeat.ogg, egg-impact.ogg)
-- [ ] T019 Update `src/managers/AnimationManager.ts` with `createFrogAnimations()` method (frog-stationary: 4fps loop, frog-jumping: 10fps no-loop)
-- [ ] T020 [P] Update `src/managers/AnimationManager.ts` with `createEnvironmentalAnimations()` method (grass-wave: 6fps loop yoyo, water-wave: 8fps loop)
-- [ ] T021 [P] Update `src/managers/AnimationManager.ts` with `createEggAnimation()` method (bird-egg-fall: 10fps loop)
-- [ ] T022 Update `src/managers/GameStateManager.ts` to add `defeatedEnemies: Set<string>` property and methods (`addDefeatedEnemy()`, `isEnemyDefeated()`, `clearDefeatedEnemies()`)
-- [ ] T023 Update `src/managers/GameStateManager.ts` to add `collectedItems: Set<string>` property and methods (`addCollectedItem()`, `isItemCollected()`, `clearCollectedItems()`)
-- [ ] T024 Update `src/managers/GameStateManager.ts` to enforce `incrementCoins(amount: 1)` contract (MUST only accept amount === 1, throw error otherwise)
-- [ ] T025 [P] Update `src/managers/AudioManager.ts` to add new SFX playback methods for frog-jump, frog-defeat, egg-impact
+- [X] T012 Update `src/scenes/PreloadScene.ts` to load all scaled sprite sheets (120% versions or maintain original keys with runtime scaling)
+- [X] T013 Update `src/scenes/PreloadScene.ts` to load frog enemy sprite sheet
+- [X] T014 [P] Update `src/scenes/PreloadScene.ts` to load grass-layer sprite sheet
+- [X] T015 [P] Update `src/scenes/PreloadScene.ts` to load water-animation sprite sheet
+- [X] T016 [P] Update `src/scenes/PreloadScene.ts` to load clouds sprite/tile
+- [X] T017 [P] Update `src/scenes/PreloadScene.ts` to load bird-egg sprite sheet
+- [X] T018 [P] Update `src/scenes/PreloadScene.ts` to load new audio files (frog-jump.ogg, frog-defeat.ogg, egg-impact.ogg)
+- [X] T019 Update `src/managers/AnimationManager.ts` with `createFrogAnimations()` method (frog-stationary: 4fps loop, frog-jumping: 10fps no-loop)
+- [X] T020 [P] Update `src/managers/AnimationManager.ts` with `createEnvironmentalAnimations()` method (grass-wave: 6fps loop yoyo, water-wave: 8fps loop)
+- [X] T021 [P] Update `src/managers/AnimationManager.ts` with `createEggAnimation()` method (bird-egg-fall: 10fps loop)
+- [X] T022 Update `src/managers/GameStateManager.ts` to add `defeatedEnemies: Set<string>` property and methods (`addDefeatedEnemy()`, `isEnemyDefeated()`, `clearDefeatedEnemies()`)
+- [X] T023 Update `src/managers/GameStateManager.ts` to add `collectedItems: Set<string>` property and methods (`addCollectedItem()`, `isItemCollected()`, `clearCollectedItems()`)
+- [X] T024 Update `src/managers/GameStateManager.ts` to enforce `incrementCoins(amount: 1)` contract (MUST only accept amount === 1, throw error otherwise)
+- [X] T025 [P] Update `src/managers/AudioManager.ts` to add new SFX playback methods for frog-jump, frog-defeat, egg-impact
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 

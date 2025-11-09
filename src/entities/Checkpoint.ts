@@ -5,6 +5,7 @@
 
 import Phaser from 'phaser';
 import type { ICheckpoint } from '../types/entities';
+import { GAME_CONFIG } from '../config/constants';
 
 export class Checkpoint implements ICheckpoint {
   readonly sprite: Phaser.Physics.Arcade.Sprite;
@@ -29,14 +30,14 @@ export class Checkpoint implements ICheckpoint {
 
     // Create sprite (non-physical, just for overlap detection)
     this.sprite = scene.physics.add.sprite(x, y, 'checkpoint-placeholder');
-    this.sprite.setSize(40, 80);
+    this.sprite.setSize(48, 96);
     (this.sprite.body as Phaser.Physics.Arcade.Body).setAllowGravity(false);
 
     // Store reference to this entity in sprite data
     this.sprite.setData('entity', this);
 
     // Create flag sprite (visual indicator)
-    this.flagSprite = scene.add.sprite(x, y - 40, 'checkpoint-placeholder');
+    this.flagSprite = scene.add.sprite(x, y - 48, 'checkpoint-placeholder');
     this.flagSprite.setTint(0xff0000); // Red when inactive
   }
 

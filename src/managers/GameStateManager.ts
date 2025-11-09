@@ -65,25 +65,10 @@ export class GameStateManager {
 
   /**
    * Increase coin count
-   * MUST increment by exactly 1 (contract enforcement)
    */
   collectCoin(): void {
-    this.incrementCoins(1);
-  }
-
-  /**
-   * Increment coins by exact amount
-   * Contract: MUST only accept amount === 1
-   */
-  incrementCoins(amount: number): void {
-    if (amount !== 1) {
-      throw new Error(
-        `[GameStateManager] incrementCoins() MUST be called with amount === 1, received: ${amount}`
-      );
-    }
-    
     if (this.currentSession) {
-      this.currentSession.coinsCollected += 1;
+      this.currentSession.coinsCollected++;
       console.log('[GameStateManager] Coins:', this.currentSession.coinsCollected);
     }
   }

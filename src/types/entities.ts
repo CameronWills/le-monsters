@@ -189,6 +189,46 @@ export interface IBossProjectile extends IProjectile {
 }
 
 /**
+ * Environmental layer base interface
+ * NEW (T041): Environmental layer entities for US1
+ */
+export interface IEnvironmentalLayer {
+  readonly id: string;
+  readonly type: 'grass-layer' | 'water-hazard' | 'cloud-layer';
+  isActive: boolean;
+  update(delta: number): void;
+  destroy(): void;
+}
+
+/**
+ * Grass layer interface
+ * Animated grass visual along ground surfaces
+ */
+export interface IGrassLayer extends IEnvironmentalLayer {
+  readonly sprite: Phaser.GameObjects.TileSprite;
+  type: 'grass-layer';
+}
+
+/**
+ * Water hazard interface
+ * Animated water in pit areas (causes damage/respawn)
+ */
+export interface IWaterHazard extends IEnvironmentalLayer {
+  readonly sprite: Phaser.GameObjects.Sprite;
+  type: 'water-hazard';
+}
+
+/**
+ * Cloud layer interface
+ * Parallax scrolling background clouds
+ */
+export interface ICloudLayer extends IEnvironmentalLayer {
+  readonly sprite: Phaser.GameObjects.TileSprite;
+  type: 'cloud-layer';
+  updateParallax(cameraScrollX: number): void;
+}
+
+/**
  * Level data structure from JSON
  */
 export interface ILevelData {

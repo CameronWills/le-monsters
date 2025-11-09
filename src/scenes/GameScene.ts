@@ -22,6 +22,9 @@ import { PowerUpWizardHat } from '../entities/PowerUpWizardHat';
 import { PlayerProjectile } from '../entities/PlayerProjectile';
 import { Boss } from '../entities/Boss';
 import { BossProjectile } from '../entities/BossProjectile';
+import { GrassLayer } from '../entities/GrassLayer';
+import { WaterHazard } from '../entities/WaterHazard';
+import { CloudLayer } from '../entities/CloudLayer';
 
 export class GameScene extends Phaser.Scene {
   private levelData!: ILevelData;
@@ -43,6 +46,11 @@ export class GameScene extends Phaser.Scene {
   private playerProjectiles!: Phaser.GameObjects.Group;
   private boss?: Boss;
   private bossProjectiles!: Phaser.GameObjects.Group;
+
+  // Environmental layers (NEW - T039)
+  private cloudLayer?: CloudLayer;
+  private grassLayers: GrassLayer[] = [];
+  private waterHazards: WaterHazard[] = [];
 
   // Death/respawn state
   private isDead = false;
@@ -81,6 +89,9 @@ export class GameScene extends Phaser.Scene {
     // Create groups
     this.createGroups();
 
+    // NEW (T039): Setup environmental layers BEFORE spawning entities
+    this.setupEnvironmentalLayers();
+
     // Spawn entities from level data
     this.spawnEntities();
 
@@ -105,6 +116,11 @@ export class GameScene extends Phaser.Scene {
 
     // Update HUD timer
     this.hudManager.updateTimer(this.gameStateManager.getFormattedTime());
+
+    // NEW (T040): Update cloud parallax scrolling based on camera position
+    if (this.cloudLayer) {
+      this.cloudLayer.updateParallax(this.cameras.main.scrollX);
+    }
 
     // Handle death timer
     if (this.isDead) {
@@ -380,6 +396,60 @@ export class GameScene extends Phaser.Scene {
     this.cameras.main.startFollow(this.player.sprite, true, 0.1, 0.1);
 
     console.log('[GameScene] Entities spawned');
+  }
+
+  /**
+   * NEW (T039): Setup environmental layers for enhanced visual experience
+   * Creates cloud parallax background, grass layers on platforms, and water hazards in pits
+   */
+  private setupEnvironmentalLayers(): void {
+    // Create cloud layer (parallax scrolling background)
+    // Full level width and top portion of screen (sky region)
+    this.cloudLayer = new CloudLayer(
+      this,
+      0,
+      0,
+      this.levelData.metadata.width,
+      Math.floor(this.levelData.metadata.height * 0.3) // Top 30% of level
+    );
+
+    // Create grass layers on top of each platform
+    // Iterate through platform data and create grass on each one
+    this.levelData.platforms.forEach((platformData) => {
+      const grass = new GrassLayer(
+        this,
+        platformData.x,
+        platformData.y, // Y position at platform top
+        platformData.width
+      );
+      this.grassLayers.push(grass);
+    });
+
+    // Create water hazards in pits
+    // For now, we'll create a few hardcoded water hazards
+    // TODO: In US3 (level extension), read water hazard positions from level data
+    // Example: Water at bottom of pit areas
+    const pitWaterY = this.levelData.metadata.height - 100; // Near bottom
+    
+    // Create water hazards at common pit locations (based on level1 structure)
+    const pitLocations = [
+      { x: 800, width: 200 },
+      { x: 1400, width: 200 },
+      { x: 2200, width: 300 },
+    ];
+
+    pitLocations.forEach((pit) => {
+      const water = new WaterHazard(
+        this,
+        pit.x,
+        pitWaterY,
+        pit.width,
+        100 // Height of water visual
+      );
+      this.waterHazards.push(water);
+    });
+
+    console.log(`[GameScene] Environmental layers created: ${this.grassLayers.length} grass layers, ${this.waterHazards.length} water hazards`);
   }
 
   private setupCollisions(): void {
