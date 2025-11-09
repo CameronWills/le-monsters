@@ -12,64 +12,57 @@
   },
   "platforms": [
     {
-      "x": 200,
-      "y": 1020,
-      "width": 500,
-      "height": 120,
-      "type": "static"
-    },
-    {
-      "x": 700,
-      "y": 1020,
-      "width": 500,
+      "x": 0,
+      "y": 960,
+      "width": 1200,
       "height": 120,
       "type": "static"
     },
     {
       "x": 1400,
-      "y": 1020,
+      "y": 960,
       "width": 500,
       "height": 120,
       "type": "static"
     },
     {
       "x": 2100,
-      "y": 1020,
+      "y": 960,
       "width": 500,
       "height": 120,
       "type": "static"
     },
     {
       "x": 2800,
-      "y": 1020,
+      "y": 960,
       "width": 500,
       "height": 120,
       "type": "static"
     },
     {
       "x": 3500,
-      "y": 1020,
+      "y": 960,
       "width": 500,
       "height": 120,
       "type": "static"
     },
     {
       "x": 4200,
-      "y": 1020,
+      "y": 960,
       "width": 500,
       "height": 120,
       "type": "static"
     },
     {
       "x": 4900,
-      "y": 1020,
+      "y": 960,
       "width": 500,
       "height": 120,
       "type": "static"
     },
     {
       "x": 5600,
-      "y": 1020,
+      "y": 960,
       "width": 800,
       "height": 120,
       "type": "static"
@@ -177,45 +170,6 @@
         { "x": 2700, "y": 900 }
       ],
       "speed": 60
-    },
-    {
-      "x": 3400,
-      "y": 850,
-      "width": 180,
-      "height": 40,
-      "type": "moving",
-      "path": [
-        { "x": 3400, "y": 850 },
-        { "x": 3700, "y": 850 },
-        { "x": 3400, "y": 850 }
-      ],
-      "speed": 80
-    },
-    {
-      "x": 4700,
-      "y": 900,
-      "width": 150,
-      "height": 40,
-      "type": "moving",
-      "path": [
-        { "x": 4700, "y": 900 },
-        { "x": 4700, "y": 600 },
-        { "x": 4700, "y": 900 }
-      ],
-      "speed": 70
-    },
-    {
-      "x": 5500,
-      "y": 900,
-      "width": 180,
-      "height": 40,
-      "type": "moving",
-      "path": [
-        { "x": 5500, "y": 900 },
-        { "x": 5800, "y": 900 },
-        { "x": 5500, "y": 900 }
-      ],
-      "speed": 75
     }
   ],
   "checkpoints": [

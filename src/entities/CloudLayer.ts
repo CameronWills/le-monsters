@@ -60,19 +60,17 @@ export class CloudLayer implements ICloudLayer {
     
     // Light blue sky background
     graphics.fillStyle(0x87ceeb, 1);
-    graphics.fillRect(0, 0, 256, 256);
+    graphics.fillRect(0, 0, 512, 512);
     
     // White clouds (simple circles)
-    graphics.fillStyle(0xffffff, 0.8);
-    graphics.fillCircle(64, 80, 30);
-    graphics.fillCircle(90, 80, 35);
-    graphics.fillCircle(110, 80, 25);
+    graphics.fillStyle(0xffffff, 0.7);
+    graphics.fillCircle(108, 140, 60);
+    graphics.fillCircle(160, 140, 70);
+    graphics.fillCircle(240, 140, 50);
+    graphics.fillCircle(290, 140, 30);
+
     
-    graphics.fillCircle(180, 160, 28);
-    graphics.fillCircle(200, 160, 32);
-    graphics.fillCircle(220, 160, 28);
-    
-    graphics.generateTexture('clouds-placeholder', 256, 256);
+    graphics.generateTexture('clouds-placeholder', 512, 512);
     graphics.destroy();
   }
 

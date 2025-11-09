@@ -27,8 +27,8 @@ export class HUDManager {
 
     // Lives display (top-left)
     this.livesText = scene.add.text(padding, padding, 'Lives: 3', {
-      fontSize: '24px',
-      color: '#ffffff',
+      fontSize: '42px',
+      color: '#ffff00',
       fontStyle: 'bold',
       stroke: '#000000',
       strokeThickness: 4,
@@ -37,7 +37,7 @@ export class HUDManager {
 
     // Timer display (top-center) - removed "Time:" prefix per requirements
     this.timerText = scene.add.text(centerX, padding, '00:00', {
-      fontSize: '24px',
+      fontSize: '42px',
       color: '#ffffff',
       fontStyle: 'bold',
       stroke: '#000000',
@@ -47,7 +47,7 @@ export class HUDManager {
 
     // Coins display (top-right)
     this.coinsText = scene.add.text(cameraWidth - padding, padding, 'Coins: 0', {
-      fontSize: '24px',
+      fontSize: '42px',
       color: '#ffff00',
       fontStyle: 'bold',
       stroke: '#000000',

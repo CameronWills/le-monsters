@@ -35,6 +35,7 @@ export class Platform implements IPlatform {
 
     // Create static sprite
     this.sprite = scene.physics.add.staticSprite(x, y, 'platform-placeholder');
+    this.sprite.setOrigin(0, 0); // Set origin to top-left instead of center
     this.sprite.setDisplaySize(width, height);
     this.sprite.refreshBody();
 

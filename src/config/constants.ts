@@ -9,7 +9,7 @@ export const GAME_CONFIG = {
   CANVAS_HEIGHT: 1080,
 
   // === Player ===
-  PLAYER_SPEED: 200, // Max run speed (pixels/second)
+  PLAYER_SPEED: 250, // Max run speed (pixels/second)
   PLAYER_JUMP_VELOCITY: -600, // Jump strength (negative = upward) - increased for better platforming
   PLAYER_ACCELERATION: 600, // Acceleration/deceleration rate
   PLAYER_MAX_LIVES: 3,
@@ -39,7 +39,7 @@ export const GAME_CONFIG = {
 
   // === Environmental (NEW) ===
   GRASS_HEIGHT: 30, // pixels
-  CLOUD_SCROLL_FACTOR: 0.5, // 50% of camera speed
+  CLOUD_SCROLL_FACTOR: 0.2, // 50% of camera speed
 
   // === Boss ===
   BOSS_MAX_HEALTH: 10,
