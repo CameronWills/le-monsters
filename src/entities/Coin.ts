@@ -67,6 +67,12 @@ export class Coin implements ICoin {
     this.isCollected = true;
     console.log('[Coin] Collected!');
 
+    // Disable physics body immediately to prevent further collisions
+    const body = this.sprite.body as Phaser.Physics.Arcade.Body;
+    if (body) {
+      body.enable = false;
+    }
+
     // Play collection animation
     this.scene.tweens.add({
       targets: this.sprite,

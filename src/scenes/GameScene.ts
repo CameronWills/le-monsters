@@ -635,6 +635,9 @@ export class GameScene extends Phaser.Scene {
     const coin = sprite.getData('entity') as Coin;
     if (!coin) return;
 
+    // Check if coin is already collected to prevent double-counting
+    if (coin.isCollected) return;
+
     // Collect coin
     coin.collect(this.player);
     
