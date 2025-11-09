@@ -27,6 +27,20 @@ export const GAME_CONFIG = {
   BIRD_DROPPING_COOLDOWN_MAX: 5000, // milliseconds
   SHARK_PATROL_SPEED: 80, // pixels/second
 
+  // === Frog Enemy (NEW) ===
+  FROG_JUMP_INTERVAL: 2000, // milliseconds between jumps (MUST be exactly 2000ms)
+  FROG_JUMP_SPEED: 100, // horizontal jump speed (pixels/second)
+  FROG_JUMP_HEIGHT: -250, // vertical jump velocity (negative = upward)
+  FROG_EDGE_CHECK_DISTANCE: 20, // pixels ahead to check for platform edge
+
+  // === Scaling (NEW) ===
+  SPRITE_SCALE: 1.2, // 120% scale for most entities
+  EGG_SCALE: 1.5, // 150% scale for bird eggs
+
+  // === Environmental (NEW) ===
+  GRASS_HEIGHT: 30, // pixels
+  CLOUD_SCROLL_FACTOR: 0.5, // 50% of camera speed
+
   // === Boss ===
   BOSS_MAX_HEALTH: 10,
   BOSS_BURST_SHOT_COUNT: 5, // Number of shots per burst
@@ -70,6 +84,12 @@ export const ANIMATION_CONFIG = {
   ENEMIES: {
     BIRD_FLY_FPS: 10,
     SHARK_SWIM_FPS: 8,
+    FROG_STATIONARY_FPS: 4, // Frog idle animation
+    FROG_JUMPING_FPS: 10, // Frog jump animation
+  },
+  ENVIRONMENTAL: {
+    GRASS_WAVE_FPS: 6, // Grass waving animation
+    WATER_WAVE_FPS: 8, // Water wave animation
   },
   BOSS: {
     IDLE_FPS: 6,
@@ -106,6 +126,9 @@ export const AUDIO_KEYS = {
     CHECKPOINT: 'sfx-checkpoint',
     BOSS_HIT: 'sfx-boss-hit',
     BOSS_DEFEAT: 'sfx-boss-defeat',
+    FROG_JUMP: 'sfx-frog-jump', // NEW: Frog jump sound
+    FROG_DEFEAT: 'sfx-frog-defeat', // NEW: Frog defeat sound
+    EGG_IMPACT: 'sfx-egg-impact', // NEW: Egg hitting ground sound
   },
 } as const;
 
@@ -120,6 +143,11 @@ export const SPRITE_KEYS = {
   PLATFORMS: 'platforms',
   UI: 'ui',
   BACKGROUND: 'forest-bg',
+  FROG: 'frog', // NEW: Frog enemy sprite
+  GRASS: 'grass-layer', // NEW: Grass animation sprite
+  WATER: 'water-animation', // NEW: Water animation sprite
+  CLOUDS: 'clouds', // NEW: Cloud parallax sprite
+  BIRD_EGG: 'bird-egg', // NEW: Bird egg projectile sprite
 } as const;
 
 /**
@@ -136,6 +164,12 @@ export const ANIM_KEYS = {
   ENEMIES: {
     BIRD_FLY: 'bird-fly',
     SHARK_SWIM: 'shark-swim',
+    FROG_STATIONARY: 'frog-stationary', // NEW: Frog idle animation
+    FROG_JUMPING: 'frog-jumping', // NEW: Frog jump animation
+  },
+  ENVIRONMENTAL: {
+    GRASS_WAVE: 'grass-wave', // NEW: Grass waving animation
+    WATER_WAVE: 'water-wave', // NEW: Water wave animation
   },
   BOSS: {
     IDLE: 'boss-idle',

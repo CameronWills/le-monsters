@@ -128,6 +128,59 @@ export class PreloadScene extends Phaser.Scene {
       frameHeight: 64
     });
 
+    // ==========================================
+    // NEW: Frog Enemy Sprite (T013)
+    // ==========================================
+    this.load.on('loaderror', (file: Phaser.Loader.File) => {
+      console.warn(`[PreloadScene] Failed to load: ${file.key} from ${file.url}`);
+    });
+
+    // Frog enemy sprite sheet - TODO: Create asset file
+    this.load.spritesheet(SPRITE_KEYS.FROG, 'assets/sprites/frog.png', {
+      frameWidth: 64, // Adjust based on actual sprite size
+      frameHeight: 64,
+    });
+
+    // ==========================================
+    // NEW: Environmental Graphics (T014-T016)
+    // ==========================================
+
+    // Grass layer sprite sheet - TODO: Create asset file
+    this.load.spritesheet(SPRITE_KEYS.GRASS, 'assets/sprites/grass-layer.png', {
+      frameWidth: 64, // Will tile horizontally
+      frameHeight: 30, // MUST be exactly 30px
+    });
+
+    // Water animation sprite sheet - TODO: Create asset file
+    this.load.spritesheet(SPRITE_KEYS.WATER, 'assets/sprites/water-animation.png', {
+      frameWidth: 64,
+      frameHeight: 64,
+    });
+
+    // Cloud parallax sprite/tile - TODO: Create asset file
+    this.load.image(SPRITE_KEYS.CLOUDS, 'assets/sprites/clouds.png');
+
+    // ==========================================
+    // NEW: Bird Egg Sprite (T017)
+    // ==========================================
+
+    // Bird egg projectile sprite sheet - TODO: Create asset file
+    this.load.spritesheet(SPRITE_KEYS.BIRD_EGG, 'assets/sprites/bird-egg.png', {
+      frameWidth: 32, // Adjust based on actual sprite size
+      frameHeight: 32,
+    });
+
+    // ==========================================
+    // NEW: Audio Files (T018)
+    // ==========================================
+
+    // Frog sound effects - TODO: Create audio files
+    this.load.audio(AUDIO_KEYS.SFX.FROG_JUMP, 'assets/audio/sfx/frog-jump.ogg');
+    this.load.audio(AUDIO_KEYS.SFX.FROG_DEFEAT, 'assets/audio/sfx/frog-defeat.ogg');
+
+    // Egg impact sound - TODO: Create audio file
+    this.load.audio(AUDIO_KEYS.SFX.EGG_IMPACT, 'assets/audio/sfx/egg-impact.ogg');
+
     // For now, we'll create placeholder graphics in code
     // In a real implementation, you would load sprite sheets:
     // this.load.spritesheet(SPRITE_KEYS.PLAYER, 'assets/sprites/hugo.png', {
@@ -152,6 +205,9 @@ export class PreloadScene extends Phaser.Scene {
       frameRate: 10,
       repeat: -1
     });
+    
+    // Register all new animations using AnimationManager
+    AnimationManager.registerAllAnimations(this);
     
     console.log('[PreloadScene] Animations registered');
   }
