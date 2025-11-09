@@ -13,6 +13,7 @@ import { HUDManager } from '../managers/HUDManager';
 import { AudioManager } from '../managers/AudioManager';
 import { Player } from '../entities/Player';
 import { Platform } from '../entities/Platform';
+import { MovingPlatform } from '../entities/MovingPlatform';
 import { Coin } from '../entities/Coin';
 import { Checkpoint } from '../entities/Checkpoint';
 import { EnemyBird } from '../entities/EnemyBird';
@@ -38,6 +39,7 @@ export class GameScene extends Phaser.Scene {
   // Game entities
   private player!: Player;
   private platforms!: Phaser.GameObjects.Group;
+  private movingPlatforms!: Phaser.GameObjects.Group;
   private coins!: Phaser.GameObjects.Group;
   private checkpoints!: Phaser.GameObjects.Group;
   private birds!: Phaser.GameObjects.Group;
@@ -275,6 +277,9 @@ export class GameScene extends Phaser.Scene {
   private createGroups(): void {
     // Create physics groups
     this.platforms = this.add.group();
+    this.movingPlatforms = this.add.group({
+      runChildUpdate: true, // Enable update() calls for moving platforms
+    });
     this.coins = this.add.group({
       runChildUpdate: true, // Enable update() calls on group children
     });
@@ -305,15 +310,27 @@ export class GameScene extends Phaser.Scene {
   }
 
   private spawnEntities(): void {
-    // Spawn platforms
+    // Spawn static platforms
     this.levelData.platforms.forEach((platformData) => {
-      const platform = this.entityFactory.createStaticPlatform(
-        platformData.x,
-        platformData.y,
-        platformData.width,
-        platformData.height
-      ) as Platform;
-      this.platforms.add(platform.sprite);
+      if (platformData.type === 'static') {
+        const platform = this.entityFactory.createStaticPlatform(
+          platformData.x,
+          platformData.y,
+          platformData.width,
+          platformData.height
+        ) as Platform;
+        this.platforms.add(platform.sprite);
+      } else if (platformData.type === 'moving' && platformData.path && platformData.speed) {
+        const movingPlatform = this.entityFactory.createMovingPlatform(
+          platformData.x,
+          platformData.y,
+          platformData.width,
+          platformData.height,
+          platformData.path,
+          platformData.speed
+        ) as MovingPlatform;
+        this.movingPlatforms.add(movingPlatform.sprite);
+      }
     });
 
     // Spawn coins
@@ -468,9 +485,13 @@ export class GameScene extends Phaser.Scene {
   private setupCollisions(): void {
     // Player collides with platforms
     this.physics.add.collider(this.player.sprite, this.platforms);
+    
+    // Player collides with moving platforms (player inherits platform velocity)
+    this.physics.add.collider(this.player.sprite, this.movingPlatforms);
 
     // Frogs collide with platforms (ground-based enemy)
     this.physics.add.collider(this.frogs, this.platforms);
+    this.physics.add.collider(this.frogs, this.movingPlatforms);
 
     // Enemy projectiles (eggs) collide with platforms and break
     this.physics.add.collider(

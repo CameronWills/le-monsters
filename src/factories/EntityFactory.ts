@@ -7,6 +7,7 @@ import Phaser from 'phaser';
 import { GAME_CONFIG } from '../config/constants';
 import { Player } from '../entities/Player';
 import { Platform } from '../entities/Platform';
+import { MovingPlatform } from '../entities/MovingPlatform';
 import { Coin } from '../entities/Coin';
 import { Checkpoint } from '../entities/Checkpoint';
 import { EnemyBird } from '../entities/EnemyBird';
@@ -30,6 +31,7 @@ import type {
   IEnemyProjectile,
   IBossProjectile,
   IPlatform,
+  IMovingPlatform,
 } from '../types/entities';
 
 export class EntityFactory {
@@ -146,7 +148,6 @@ export class EntityFactory {
 
   /**
    * Create moving platform
-   * TODO: Implement in Phase 8 (Moving Platforms)
    */
   createMovingPlatform(
     x: number,
@@ -155,8 +156,8 @@ export class EntityFactory {
     height: number,
     path: Array<{ x: number; y: number }>,
     speed: number
-  ): any {
-    throw new Error('EntityFactory.createMovingPlatform not yet implemented');
+  ): IMovingPlatform {
+    return new MovingPlatform(this.scene, x, y, width, height, path, speed);
   }
 
   /**
