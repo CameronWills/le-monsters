@@ -35,8 +35,8 @@ export class Player implements IPlayer {
     this.sprite = scene.physics.add.sprite(x, y, 'player-running');
 
     // Set sprite dimensions to match frame size (54x76)
-    this.sprite.setSize(54, 76);
-    this.sprite.setDisplaySize(54, 76);
+    this.sprite.setSize(66, 96);
+    this.sprite.setDisplaySize(66, 96);
     
     // Store reference to this entity in sprite data
     this.sprite.setData('entity', this);
