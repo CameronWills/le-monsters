@@ -239,6 +239,7 @@ export interface ILevelData {
   enemies: IEnemyData[];
   coins: ICoinData[];
   powerUps: IPowerUpData[];
+  waterHazards: IWaterHazardData[];
   bossArena: IBossArenaData;
 }
 
@@ -283,6 +284,13 @@ export interface IPowerUpData {
   type: 'wizard-hat';
   x: number;
   y: number;
+}
+
+export interface IWaterHazardData {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
 }
 
 export interface IBossArenaData {

@@ -441,26 +441,14 @@ export class GameScene extends Phaser.Scene {
       Math.floor(this.levelData.metadata.height * 0.25) // Top 25% of level
     );
 
-    // Create water hazards in pits
-    // For now, we'll create a few hardcoded water hazards
-    // TODO: In US3 (level extension), read water hazard positions from level data
-    // Example: Water at bottom of pit areas
-    const pitWaterY = this.levelData.metadata.height - 100; // Near bottom
-    
-    // Create water hazards at common pit locations (based on level1 structure)
-    const pitLocations = [
-      { x: 800, width: 200 },
-      { x: 1400, width: 200 },
-      { x: 2200, width: 300 },
-    ];
-
-    pitLocations.forEach((pit) => {
+    // Create water hazards from level data
+    this.levelData.waterHazards.forEach((waterData) => {
       const water = new WaterHazard(
         this,
-        pit.x,
-        pitWaterY,
-        pit.width,
-        100 // Height of water visual
+        waterData.x,
+        waterData.y,
+        waterData.width,
+        waterData.height
       );
       this.waterHazards.push(water);
     });
