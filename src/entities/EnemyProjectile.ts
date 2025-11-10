@@ -39,8 +39,8 @@ export class EnemyProjectile implements IEnemyProjectile {
 
     // Create sprite (1.5x larger than old projectile = 18x18)
     this.sprite = scene.physics.add.sprite(x, y, 'bird-egg-placeholder');
-    this.sprite.setSize(18, 22); // Oval shape
-    this.sprite.setDisplaySize(18 * GAME_CONFIG.EGG_SCALE, 22 * GAME_CONFIG.EGG_SCALE);
+    this.sprite.setSize(24, 30); // Oval shape
+    this.sprite.setDisplaySize(30, 40);
     
     // Enable gravity (eggs fall like real objects)
     (this.sprite.body as Phaser.Physics.Arcade.Body).setAllowGravity(true);

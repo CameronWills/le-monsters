@@ -33,10 +33,6 @@ export const GAME_CONFIG = {
   FROG_JUMP_HEIGHT: -250, // vertical jump velocity (negative = upward)
   FROG_EDGE_CHECK_DISTANCE: 20, // pixels ahead to check for platform edge
 
-  // === Scaling (NEW) ===
-  SPRITE_SCALE: 1.2, // 120% scale for most entities
-  EGG_SCALE: 1.5, // 150% scale for bird eggs
-
   // === Environmental (NEW) ===
   GRASS_HEIGHT: 30, // pixels
   CLOUD_SCROLL_FACTOR: 0.2, // 50% of camera speed
