@@ -126,6 +126,12 @@ export class PreloadScene extends Phaser.Scene {
       frameHeight: 96
     });
 
+    // Ground texture
+    this.load.image('ground', 'assets/sprites/ground.png');
+
+    // platform texture
+    this.load.image('platform', 'assets/sprites/platform.png');
+
     // ==========================================
     // NEW: Frog Enemy Sprite (T013)
     // ==========================================

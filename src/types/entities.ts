@@ -146,7 +146,6 @@ export interface IPlatform extends IEntity {
   type: 'platform-static' | 'platform-moving';
   width: number;
   height: number;
-  textureKey: string;
 }
 
 /**
