@@ -14,6 +14,7 @@ export class Platform implements IPlatform {
 
   width: number;
   height: number;
+  private tileSprite?: Phaser.GameObjects.TileSprite;
 
   constructor(
     scene: Phaser.Scene,
@@ -36,11 +37,17 @@ export class Platform implements IPlatform {
       this.createPlaceholderTexture(scene);
     }
 
-    // Create static sprite
+    // Create invisible physics sprite for collision detection
     this.sprite = scene.physics.add.staticSprite(x, y, textureKey);
-    this.sprite.setOrigin(0, 0); // Set origin to top-left instead of center
+    this.sprite.setOrigin(0, 0);
+    this.sprite.setAlpha(0); // Make invisible
     this.sprite.setDisplaySize(width, height);
     this.sprite.refreshBody();
+
+    // Create TileSprite for visual (repeating texture)
+    this.tileSprite = scene.add.tileSprite(x, y, width, height, textureKey);
+    this.tileSprite.setOrigin(0, 0);
+    this.tileSprite.setDepth(10); // Same depth as platforms
 
     // Store reference to this entity in sprite data
     this.sprite.setData('entity', this);
@@ -69,6 +76,9 @@ export class Platform implements IPlatform {
    */
   destroy(): void {
     this.sprite.destroy();
+    if (this.tileSprite) {
+      this.tileSprite.destroy();
+    }
     this.isActive = false;
   }
 }

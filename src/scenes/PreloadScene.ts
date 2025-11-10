@@ -132,6 +132,12 @@ export class PreloadScene extends Phaser.Scene {
     // platform texture
     this.load.image('platform', 'assets/sprites/platform.png');
 
+    // water texture
+    this.load.image('water', 'assets/sprites/water.png');
+
+    // coin texture
+    this.load.image('coin', 'assets/sprites/coin.png');
+
     // ==========================================
     // NEW: Frog Enemy Sprite (T013)
     // ==========================================

@@ -213,7 +213,7 @@ export interface IEnvironmentalLayer {
  * Animated water in pit areas (causes damage/respawn)
  */
 export interface IWaterHazard extends IEnvironmentalLayer {
-  readonly sprite: Phaser.GameObjects.Sprite;
+  readonly sprite: Phaser.GameObjects.TileSprite;
   type: 'water-hazard';
 }
 

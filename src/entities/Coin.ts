@@ -19,13 +19,16 @@ export class Coin implements ICoin {
     this.scene = scene;
     this.id = `coin-${Date.now()}-${Math.random()}`;
 
+    // Use coin texture if available, otherwise fallback to placeholder
+    const textureKey = scene.textures.exists('coin') ? 'coin' : 'coin-placeholder';
+
     // Create placeholder texture if it doesn't exist
     if (!scene.textures.exists('coin-placeholder')) {
       this.createPlaceholderTexture(scene);
     }
 
     // Create sprite
-    this.sprite = scene.physics.add.sprite(x, y, 'coin-placeholder');
+    this.sprite = scene.physics.add.sprite(x, y, textureKey);
     this.sprite.setSize(28, 28);
     
     // Store reference to this entity in sprite data
