@@ -57,8 +57,9 @@ export class EnemyBird implements IEnemyBird {
 
     // Create sprite
     this.sprite = scene.physics.add.sprite(x, y, 'bird-placeholder');
-    this.sprite.setSize(32, 24);
+    this.sprite.setSize(38, 28);
     (this.sprite.body as Phaser.Physics.Arcade.Body).setAllowGravity(false);
+
 
     // Store reference to this entity
     this.sprite.setData('entity', this);
@@ -78,10 +79,10 @@ export class EnemyBird implements IEnemyBird {
   private createPlaceholderTexture(scene: Phaser.Scene): void {
     const graphics = scene.add.graphics();
     graphics.fillStyle(0x9b59b6, 1); // Purple for bird
-    graphics.fillRect(0, 0, 32, 24);
+    graphics.fillRect(0, 0, 38, 28);
     graphics.fillStyle(0xffffff, 1); // White eye
     graphics.fillCircle(24, 8, 4);
-    graphics.generateTexture('bird-placeholder', 32, 24);
+    graphics.generateTexture('bird-placeholder', 38, 28);
     graphics.destroy();
   }
 

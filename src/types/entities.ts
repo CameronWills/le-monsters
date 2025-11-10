@@ -46,7 +46,7 @@ export interface IPlayer extends IEntity {
  * Base enemy interface
  */
 export interface IEnemy extends IEntity {
-  type: 'enemy-bird' | 'enemy-shark';
+  type: 'enemy-bird' | 'enemy-shark' | 'enemy-frog';
   isAlive: boolean;
   spawnPosition: { x: number; y: number };
   takeDamage(): void;
@@ -77,6 +77,15 @@ export interface IEnemyShark extends IEnemy {
   patrolDirection: 1 | -1;
   reverseDirection(): void;
   isAtBoundary(): boolean;
+}
+
+/**
+ * Frog enemy interface
+ */
+export interface IEnemyFrog extends IEnemy {
+  type: 'enemy-frog';
+  jumpTimer: number;
+  readonly jumpInterval: number;
 }
 
 /**
@@ -137,7 +146,6 @@ export interface IPlatform extends IEntity {
   type: 'platform-static' | 'platform-moving';
   width: number;
   height: number;
-  textureKey: string;
 }
 
 /**
@@ -189,6 +197,37 @@ export interface IBossProjectile extends IProjectile {
 }
 
 /**
+ * Environmental layer base interface
+ * NEW (T041): Environmental layer entities for US1
+ */
+export interface IEnvironmentalLayer {
+  readonly id: string;
+  readonly type: 'grass-layer' | 'water-hazard' | 'cloud-layer';
+  isActive: boolean;
+  update(delta: number): void;
+  destroy(): void;
+}
+
+/**
+ * Water hazard interface
+ * Animated water in pit areas (causes damage/respawn)
+ */
+export interface IWaterHazard extends IEnvironmentalLayer {
+  readonly sprite: Phaser.GameObjects.TileSprite;
+  type: 'water-hazard';
+}
+
+/**
+ * Cloud layer interface
+ * Parallax scrolling background clouds
+ */
+export interface ICloudLayer extends IEnvironmentalLayer {
+  readonly sprite: Phaser.GameObjects.TileSprite;
+  type: 'cloud-layer';
+  updateParallax(cameraScrollX: number): void;
+}
+
+/**
  * Level data structure from JSON
  */
 export interface ILevelData {
@@ -199,6 +238,7 @@ export interface ILevelData {
   enemies: IEnemyData[];
   coins: ICoinData[];
   powerUps: IPowerUpData[];
+  waterHazards: IWaterHazardData[];
   bossArena: IBossArenaData;
 }
 
@@ -226,7 +266,7 @@ export interface ICheckpointData {
 }
 
 export interface IEnemyData {
-  type: 'bird' | 'shark';
+  type: 'bird' | 'shark' | 'frog';
   x: number;
   y: number;
   flyDirection?: -1 | 1;
@@ -243,6 +283,13 @@ export interface IPowerUpData {
   type: 'wizard-hat';
   x: number;
   y: number;
+}
+
+export interface IWaterHazardData {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
 }
 
 export interface IBossArenaData {

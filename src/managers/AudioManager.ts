@@ -244,4 +244,29 @@ export class AudioManager {
     
     console.log('[AudioManager] Destroyed');
   }
+
+  // ==========================================
+  // NEW: Frog and Egg SFX Methods (T025)
+  // ==========================================
+
+  /**
+   * Play frog jump sound effect
+   */
+  playFrogJump(): void {
+    this.playSfx('sfx-frog-jump');
+  }
+
+  /**
+   * Play frog defeat sound effect
+   */
+  playFrogDefeat(): void {
+    this.playSfx('sfx-frog-defeat');
+  }
+
+  /**
+   * Play egg ground impact sound effect
+   */
+  playEggImpact(): void {
+    this.playSfx('sfx-egg-impact');
+  }
 }

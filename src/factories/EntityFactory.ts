@@ -4,13 +4,14 @@
  */
 
 import Phaser from 'phaser';
-import { GAME_CONFIG } from '../config/constants';
 import { Player } from '../entities/Player';
 import { Platform } from '../entities/Platform';
+import { MovingPlatform } from '../entities/MovingPlatform';
 import { Coin } from '../entities/Coin';
 import { Checkpoint } from '../entities/Checkpoint';
 import { EnemyBird } from '../entities/EnemyBird';
 import { EnemyShark } from '../entities/EnemyShark';
+import { EnemyFrog } from '../entities/EnemyFrog';
 import { EnemyProjectile } from '../entities/EnemyProjectile';
 import { PowerUpWizardHat } from '../entities/PowerUpWizardHat';
 import { PlayerProjectile } from '../entities/PlayerProjectile';
@@ -20,6 +21,7 @@ import type {
   IPlayer,
   IEnemyBird,
   IEnemyShark,
+  IEnemyFrog,
   IBoss,
   ICheckpoint,
   IPowerUpWizardHat,
@@ -28,6 +30,7 @@ import type {
   IEnemyProjectile,
   IBossProjectile,
   IPlatform,
+  IMovingPlatform,
 } from '../types/entities';
 
 export class EntityFactory {
@@ -86,6 +89,18 @@ export class EntityFactory {
   }
 
   /**
+   * Create frog enemy
+   */
+  createFrog(
+    x: number,
+    y: number,
+    playerRef: Phaser.Physics.Arcade.Sprite,
+    platforms: Phaser.GameObjects.Group
+  ): IEnemyFrog {
+    return new EnemyFrog(this.scene, x, y, playerRef, platforms);
+  }
+
+  /**
    * Create boss entity
    */
   createBoss(
@@ -132,7 +147,6 @@ export class EntityFactory {
 
   /**
    * Create moving platform
-   * TODO: Implement in Phase 8 (Moving Platforms)
    */
   createMovingPlatform(
     x: number,
@@ -141,8 +155,8 @@ export class EntityFactory {
     height: number,
     path: Array<{ x: number; y: number }>,
     speed: number
-  ): any {
-    throw new Error('EntityFactory.createMovingPlatform not yet implemented');
+  ): IMovingPlatform {
+    return new MovingPlatform(this.scene, x, y, width, height, path, speed);
   }
 
   /**

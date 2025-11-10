@@ -64,7 +64,7 @@ export class PlayerProjectile implements IPlayerProjectile {
     graphics.fillCircle(8, 8, 8);
     graphics.fillStyle(0xffffff, 1); // White center
     graphics.fillCircle(8, 8, 4);
-    graphics.generateTexture('player-projectile-placeholder', 16, 16);
+    graphics.generateTexture('player-projectile-placeholder', 20, 20);
     graphics.destroy();
   }
 

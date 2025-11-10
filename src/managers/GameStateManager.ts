@@ -8,6 +8,10 @@ import type { IGameSession, ISessionEndData, ICheckpoint } from '../types/entiti
 
 export class GameStateManager {
   private currentSession: IGameSession | null = null;
+  
+  // NEW: Enemy and item respawn tracking
+  private defeatedEnemies: Set<string> = new Set();
+  private collectedItems: Set<string> = new Set();
 
   /**
    * Start new game session
@@ -148,5 +152,67 @@ export class GameStateManager {
 
     console.log('[GameStateManager] Session ended', data);
     return data;
+  }
+
+  // ==========================================
+  // NEW: Enemy Respawn Tracking (T022)
+  // ==========================================
+
+  /**
+   * Add defeated enemy ID to tracking set
+   * Called when any enemy is defeated
+   */
+  addDefeatedEnemy(id: string): void {
+    this.defeatedEnemies.add(id);
+    console.log(`[GameStateManager] Enemy defeated: ${id} (total: ${this.defeatedEnemies.size})`);
+  }
+
+  /**
+   * Check if enemy has been defeated
+   * Returns true if enemy should NOT spawn
+   */
+  isEnemyDefeated(id: string): boolean {
+    return this.defeatedEnemies.has(id);
+  }
+
+  /**
+   * Clear all defeated enemies
+   * Called when player dies and respawns at checkpoint
+   */
+  clearDefeatedEnemies(): void {
+    const count = this.defeatedEnemies.size;
+    this.defeatedEnemies.clear();
+    console.log(`[GameStateManager] Cleared ${count} defeated enemies (respawning all)`);
+  }
+
+  // ==========================================
+  // NEW: Item Collection Tracking (T023)
+  // ==========================================
+
+  /**
+   * Add collected item ID to tracking set
+   * Called when coin or wizard hat is collected
+   */
+  addCollectedItem(id: string): void {
+    this.collectedItems.add(id);
+    console.log(`[GameStateManager] Item collected: ${id} (total: ${this.collectedItems.size})`);
+  }
+
+  /**
+   * Check if item has been collected
+   * Returns true if item should NOT spawn
+   */
+  isItemCollected(id: string): boolean {
+    return this.collectedItems.has(id);
+  }
+
+  /**
+   * Clear all collected items
+   * Called when player dies and respawns at checkpoint
+   */
+  clearCollectedItems(): void {
+    const count = this.collectedItems.size;
+    this.collectedItems.clear();
+    console.log(`[GameStateManager] Cleared ${count} collected items (respawning all)`);
   }
 }

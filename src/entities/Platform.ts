@@ -14,7 +14,7 @@ export class Platform implements IPlatform {
 
   width: number;
   height: number;
-  textureKey: string;
+  private tileSprite?: Phaser.GameObjects.TileSprite;
 
   constructor(
     scene: Phaser.Scene,
@@ -26,17 +26,28 @@ export class Platform implements IPlatform {
     this.id = `platform-${Date.now()}-${Math.random()}`;
     this.width = width;
     this.height = height;
-    this.textureKey = 'platform-placeholder';
 
-    // Create placeholder texture if it doesn't exist
+    const type = height > 50 ? 'ground' : 'platform';
+
+    // Use ground texture if available, otherwise fallback to placeholder
+    const textureKey = scene.textures.exists(type) ? type : 'platform-placeholder';
+    
+    // Create placeholder texture if needed (fallback)
     if (!scene.textures.exists('platform-placeholder')) {
       this.createPlaceholderTexture(scene);
     }
 
-    // Create static sprite
-    this.sprite = scene.physics.add.staticSprite(x, y, 'platform-placeholder');
+    // Create invisible physics sprite for collision detection
+    this.sprite = scene.physics.add.staticSprite(x, y, textureKey);
+    this.sprite.setOrigin(0, 0);
+    this.sprite.setAlpha(0); // Make invisible
     this.sprite.setDisplaySize(width, height);
     this.sprite.refreshBody();
+
+    // Create TileSprite for visual (repeating texture)
+    this.tileSprite = scene.add.tileSprite(x, y, width, height, textureKey);
+    this.tileSprite.setOrigin(0, 0);
+    this.tileSprite.setDepth(10); // Same depth as platforms
 
     // Store reference to this entity in sprite data
     this.sprite.setData('entity', this);
@@ -65,6 +76,9 @@ export class Platform implements IPlatform {
    */
   destroy(): void {
     this.sprite.destroy();
+    if (this.tileSprite) {
+      this.tileSprite.destroy();
+    }
     this.isActive = false;
   }
 }

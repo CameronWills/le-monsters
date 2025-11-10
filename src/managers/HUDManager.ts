@@ -22,37 +22,38 @@ export class HUDManager {
     this.scene = scene;
 
     const padding = 20;
+    const cameraWidth = scene.cameras.main.width;
+    const centerX = cameraWidth / 2;
 
     // Lives display (top-left)
     this.livesText = scene.add.text(padding, padding, 'Lives: 3', {
-      fontSize: '24px',
-      color: '#ffffff',
+      fontSize: '42px',
+      color: '#ffff00',
       fontStyle: 'bold',
       stroke: '#000000',
       strokeThickness: 4,
     });
     this.livesText.setScrollFactor(0).setDepth(DEPTHS.HUD);
 
-    // Coins display (top-left, below lives)
-    this.coinsText = scene.add.text(padding, padding + 35, 'Coins: 0', {
-      fontSize: '24px',
-      color: '#ffff00',
-      fontStyle: 'bold',
-      stroke: '#000000',
-      strokeThickness: 4,
-    });
-    this.coinsText.setScrollFactor(0).setDepth(DEPTHS.HUD);
-
-    // Timer display (top-right)
-    const cameraWidth = scene.cameras.main.width;
-    this.timerText = scene.add.text(cameraWidth - padding, padding, 'Time: 00:00', {
-      fontSize: '24px',
+    // Timer display (top-center) - removed "Time:" prefix per requirements
+    this.timerText = scene.add.text(centerX, padding, '00:00', {
+      fontSize: '42px',
       color: '#ffffff',
       fontStyle: 'bold',
       stroke: '#000000',
       strokeThickness: 4,
     });
-    this.timerText.setOrigin(1, 0).setScrollFactor(0).setDepth(DEPTHS.HUD);
+    this.timerText.setOrigin(0.5, 0).setScrollFactor(0).setDepth(DEPTHS.HUD);
+
+    // Coins display (top-right)
+    this.coinsText = scene.add.text(cameraWidth - padding, padding, 'Coins: 0', {
+      fontSize: '42px',
+      color: '#ffff00',
+      fontStyle: 'bold',
+      stroke: '#000000',
+      strokeThickness: 4,
+    });
+    this.coinsText.setOrigin(1, 0).setScrollFactor(0).setDepth(DEPTHS.HUD);
 
     console.log('[HUDManager] Initialized');
   }
@@ -75,7 +76,7 @@ export class HUDManager {
    * Update timer display
    */
   updateTimer(formattedTime: string): void {
-    this.timerText.setText(`Time: ${formattedTime}`);
+    this.timerText.setText(formattedTime); // No "Time:" prefix
   }
 
   /**

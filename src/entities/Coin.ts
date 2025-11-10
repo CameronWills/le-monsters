@@ -1,6 +1,6 @@
 /**
  * Coin Entity
- * Collectible coins for score tracking
+ * Collectible coins that add to score
  */
 
 import Phaser from 'phaser';
@@ -19,14 +19,17 @@ export class Coin implements ICoin {
     this.scene = scene;
     this.id = `coin-${Date.now()}-${Math.random()}`;
 
+    // Use coin texture if available, otherwise fallback to placeholder
+    const textureKey = scene.textures.exists('coin') ? 'coin' : 'coin-placeholder';
+
     // Create placeholder texture if it doesn't exist
     if (!scene.textures.exists('coin-placeholder')) {
       this.createPlaceholderTexture(scene);
     }
 
     // Create sprite
-    this.sprite = scene.physics.add.sprite(x, y, 'coin-placeholder');
-    this.sprite.setSize(24, 24);
+    this.sprite = scene.physics.add.sprite(x, y, textureKey);
+    this.sprite.setSize(28, 28);
     
     // Store reference to this entity in sprite data
     this.sprite.setData('entity', this);
@@ -66,6 +69,12 @@ export class Coin implements ICoin {
 
     this.isCollected = true;
     console.log('[Coin] Collected!');
+
+    // Disable physics body immediately to prevent further collisions
+    const body = this.sprite.body as Phaser.Physics.Arcade.Body;
+    if (body) {
+      body.enable = false;
+    }
 
     // Play collection animation
     this.scene.tweens.add({
