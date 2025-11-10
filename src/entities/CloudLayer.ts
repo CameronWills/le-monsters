@@ -26,13 +26,8 @@ export class CloudLayer implements ICloudLayer {
     this.scene = scene;
     this.id = `clouds-${Date.now()}`;
 
-    // Randomly select a cloud texture (1-3)
-    const cloudTextures = ['cloud-1', 'cloud-2', 'cloud-3'];
-    const randomIndex = Phaser.Math.Between(0, cloudTextures.length - 1);
-    const selectedTexture = cloudTextures[randomIndex];
-
     // Use selected cloud texture if available, otherwise fallback to placeholder
-    const textureKey = scene.textures.exists(selectedTexture) ? selectedTexture : 'clouds-placeholder';
+    const textureKey = scene.textures.exists('clouds') ? 'clouds' : 'clouds-placeholder';
 
     // Create placeholder texture if it doesn't exist
     if (!scene.textures.exists('clouds-placeholder')) {
