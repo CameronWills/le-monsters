@@ -157,19 +157,6 @@
       "width": 300,
       "height": 40,
       "type": "static"
-    },
-    {
-      "x": 2700,
-      "y": 900,
-      "width": 150,
-      "height": 40,
-      "type": "moving",
-      "path": [
-        { "x": 2700, "y": 900 },
-        { "x": 2700, "y": 700 },
-        { "x": 2700, "y": 900 }
-      ],
-      "speed": 60
     }
   ],
   "checkpoints": [

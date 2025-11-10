@@ -6,7 +6,6 @@
 
 import Phaser from 'phaser';
 import type { IWaterHazard } from '../types/entities';
-import { GAME_CONFIG } from '../config/constants';
 
 export class WaterHazard implements IWaterHazard {
   readonly sprite: Phaser.GameObjects.TileSprite;

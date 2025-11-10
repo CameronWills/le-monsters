@@ -22,8 +22,8 @@ export class Player implements IPlayer {
   shootCooldown = 0;
 
   // Visual elements for power-up
-  private wizardHatGraphic?: Phaser.GameObjects.Graphics;
-  private wizardStaffGraphic?: Phaser.GameObjects.Graphics;
+  private wizardHatGraphic?: Phaser.GameObjects.Image;
+  private wizardStaffGraphic?: Phaser.GameObjects.Image;
 
   private scene: Phaser.Scene;
 
@@ -219,23 +219,15 @@ export class Player implements IPlayer {
   private showWizardHatVisuals(): void {
     // Create wizard hat on player's head
     if (!this.wizardHatGraphic) {
-      this.wizardHatGraphic = this.scene.add.graphics();
+      this.wizardHatGraphic = this.scene.add.image(0, 0, 'wizard-hat');
     }
-    this.wizardHatGraphic.clear();
-    this.wizardHatGraphic.fillStyle(0x9932cc, 1); // Purple wizard hat
-    this.wizardHatGraphic.fillTriangle(-10, -40, 0, -60, 10, -40); // Hat cone
-    this.wizardHatGraphic.fillRect(-12, -40, 24, 6); // Hat brim
+    
     this.wizardHatGraphic.setDepth(100);
 
     // Create wizard staff in player's hand
     if (!this.wizardStaffGraphic) {
-      this.wizardStaffGraphic = this.scene.add.graphics();
+      this.wizardStaffGraphic = this.scene.add.image(0, 0, 'wizard-staff');
     }
-    this.wizardStaffGraphic.clear();
-    this.wizardStaffGraphic.lineStyle(3, 0x8b4513, 1); // Brown staff
-    this.wizardStaffGraphic.lineBetween(20, 0, 20, -50);
-    this.wizardStaffGraphic.fillStyle(0xffff00, 1); // Yellow orb on top
-    this.wizardStaffGraphic.fillCircle(20, -55, 5);
     this.wizardStaffGraphic.setDepth(100);
 
     console.log('[Player] Wizard hat visuals shown');
@@ -246,11 +238,9 @@ export class Player implements IPlayer {
    */
   private hideWizardHatVisuals(): void {
     if (this.wizardHatGraphic) {
-      this.wizardHatGraphic.clear();
       this.wizardHatGraphic.setVisible(false);
     }
     if (this.wizardStaffGraphic) {
-      this.wizardStaffGraphic.clear();
       this.wizardStaffGraphic.setVisible(false);
     }
     console.log('[Player] Wizard hat visuals hidden');
@@ -285,12 +275,13 @@ export class Player implements IPlayer {
       const y = this.sprite.y;
       
       // Position hat on player's head
-      this.wizardHatGraphic.setPosition(x, y);
+      this.wizardHatGraphic.setPosition(x  - 12 * this.facingDirection, y - 52);
+      this.wizardHatGraphic.flipX = this.facingDirection === -1;  
       this.wizardHatGraphic.setVisible(true);
       
       // Position staff in player's hand (flip based on facing direction)
-      this.wizardStaffGraphic.setPosition(x, y);
-      this.wizardStaffGraphic.setScale(this.facingDirection, 1);
+      this.wizardStaffGraphic.setPosition(x + 20 * this.facingDirection, y - 5);
+      this.wizardStaffGraphic.flipX = this.facingDirection === -1;
       this.wizardStaffGraphic.setVisible(true);
     }
 

@@ -22,13 +22,16 @@ export class PowerUpWizardHat implements IPowerUpWizardHat {
     this.id = `wizard-hat-${Date.now()}`;
     this.spawnPosition = { x, y };
 
+    const textureKey = scene.textures.exists('wizard-hat') ? 'wizard-hat' : 'wizard-hat-placeholder';
+
     // Create placeholder texture if it doesn't exist
     if (!scene.textures.exists('wizard-hat-placeholder')) {
       this.createPlaceholderTexture(scene);
     }
 
     // Create sprite
-    this.sprite = scene.physics.add.sprite(x, y, 'wizard-hat-placeholder');
+    this.sprite = scene.physics.add.sprite(x, y, textureKey);
+    this.sprite.setSize(53, 42);
     this.sprite.setOrigin(0.5, 0.5);
 
     // Disable gravity for floating effect

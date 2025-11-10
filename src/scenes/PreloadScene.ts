@@ -144,6 +144,11 @@ export class PreloadScene extends Phaser.Scene {
     // egg projectile texture
     this.load.image('egg', 'assets/sprites/egg.png');
 
+    // wizard hat sprite
+    this.load.image('wizard-hat', 'assets/sprites/wizard-hat.png');
+
+   // wizard staff sprite
+    this.load.image('wizard-staff', 'assets/sprites/wizard-staff.png');
 
     // ==========================================
     // NEW: Frog Enemy Sprite (T013)

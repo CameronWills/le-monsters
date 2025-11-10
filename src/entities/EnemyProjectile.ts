@@ -5,7 +5,6 @@
 
 import Phaser from 'phaser';
 import type { IEnemyProjectile } from '../types/entities';
-import { GAME_CONFIG } from '../config/constants';
 
 export class EnemyProjectile implements IEnemyProjectile {
   readonly sprite: Phaser.Physics.Arcade.Sprite;
