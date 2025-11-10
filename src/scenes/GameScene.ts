@@ -438,7 +438,7 @@ export class GameScene extends Phaser.Scene {
       0,
       0,
       this.levelData.metadata.width,
-      Math.floor(this.levelData.metadata.height * 0.25) // Top 25% of level
+      Math.floor(this.levelData.metadata.height * 0.30) // Top 25% of level
     );
 
     // Create water hazards from level data

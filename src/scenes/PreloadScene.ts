@@ -138,6 +138,11 @@ export class PreloadScene extends Phaser.Scene {
     // coin texture
     this.load.image('coin', 'assets/sprites/coin.png');
 
+    // cloud textures
+    this.load.image('cloud-1', 'assets/sprites/cloud-1.png');
+    this.load.image('cloud-2', 'assets/sprites/cloud-2.png');
+    this.load.image('cloud-3', 'assets/sprites/cloud-3.png');
+
     // ==========================================
     // NEW: Frog Enemy Sprite (T013)
     // ==========================================

@@ -26,6 +26,14 @@ export class CloudLayer implements ICloudLayer {
     this.scene = scene;
     this.id = `clouds-${Date.now()}`;
 
+    // Randomly select a cloud texture (1-3)
+    const cloudTextures = ['cloud-1', 'cloud-2', 'cloud-3'];
+    const randomIndex = Phaser.Math.Between(0, cloudTextures.length - 1);
+    const selectedTexture = cloudTextures[randomIndex];
+
+    // Use selected cloud texture if available, otherwise fallback to placeholder
+    const textureKey = scene.textures.exists(selectedTexture) ? selectedTexture : 'clouds-placeholder';
+
     // Create placeholder texture if it doesn't exist
     if (!scene.textures.exists('clouds-placeholder')) {
       this.createPlaceholderTexture(scene);
@@ -37,19 +45,16 @@ export class CloudLayer implements ICloudLayer {
       y,
       width,
       height,
-      'clouds-placeholder'
+      textureKey
     );
     this.sprite.setOrigin(0, 0); // Anchor at top-left
     this.sprite.setDepth(0); // Background layer (behind everything)
-
-    // Apply sprite scaling for consistency
-    this.sprite.setScale(GAME_CONFIG.SPRITE_SCALE);
 
     // Set scroll factor for parallax effect
     // Clouds scroll slower than camera (0.5 = half speed)
     this.sprite.setScrollFactor(GAME_CONFIG.CLOUD_SCROLL_FACTOR);
 
-    console.log(`[CloudLayer] Created at (${x}, ${y}) with size ${width}x${height}`);
+    console.log(`[CloudLayer] Created at (${x}, ${y}) with size ${width}x${height}, using texture: ${textureKey}`);
   }
 
   /**
