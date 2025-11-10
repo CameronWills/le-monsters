@@ -141,6 +141,9 @@ export class PreloadScene extends Phaser.Scene {
     // cloud textures
     this.load.image('clouds', 'assets/sprites/clouds.png');
 
+    // egg projectile texture
+    this.load.image('egg', 'assets/sprites/egg.png');
+
 
     // ==========================================
     // NEW: Frog Enemy Sprite (T013)

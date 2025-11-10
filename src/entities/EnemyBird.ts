@@ -148,7 +148,7 @@ export class EnemyBird implements IEnemyBird {
       this.sprite.x,
       this.sprite.y + 20,
       0,
-      300 // Drop downward
+      5 // Drop downward
     );
 
     console.log('[EnemyBird] Dropped projectile');

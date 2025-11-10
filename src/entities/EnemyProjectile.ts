@@ -32,14 +32,17 @@ export class EnemyProjectile implements IEnemyProjectile {
     this.speed = Math.sqrt(velocityX * velocityX + velocityY * velocityY);
     this.direction = { x: velocityX / this.speed, y: velocityY / this.speed };
 
+    // Use egg texture if available, otherwise fallback to placeholder
+    const textureKey = scene.textures.exists('egg') ? 'egg' : 'bird-egg-placeholder';
+
     // Create bird egg placeholder texture if needed
     if (!scene.textures.exists('bird-egg-placeholder')) {
       this.createEggTexture(scene);
     }
 
-    // Create sprite (1.5x larger than old projectile = 18x18)
-    this.sprite = scene.physics.add.sprite(x, y, 'bird-egg-placeholder');
-    this.sprite.setSize(24, 30); // Oval shape
+    // Create sprite
+    this.sprite = scene.physics.add.sprite(x, y, textureKey);
+    this.sprite.setSize(30, 40); // Oval shape
     this.sprite.setDisplaySize(30, 40);
     
     // Enable gravity (eggs fall like real objects)

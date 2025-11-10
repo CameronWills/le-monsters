@@ -22,9 +22,9 @@ export const GAME_CONFIG = {
   PROJECTILE_MAX_DISTANCE: 800, // pixels before auto-destroy
 
   // === Enemies ===
-  BIRD_FLY_SPEED: 100, // pixels/second
-  BIRD_DROPPING_COOLDOWN_MIN: 2000, // milliseconds
-  BIRD_DROPPING_COOLDOWN_MAX: 5000, // milliseconds
+  BIRD_FLY_SPEED: 70, // pixels/second
+  BIRD_DROPPING_COOLDOWN_MIN: 3000, // milliseconds
+  BIRD_DROPPING_COOLDOWN_MAX: 7000, // milliseconds
   SHARK_PATROL_SPEED: 80, // pixels/second
 
   // === Frog Enemy (NEW) ===
