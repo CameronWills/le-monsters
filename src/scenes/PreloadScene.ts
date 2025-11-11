@@ -126,6 +126,12 @@ export class PreloadScene extends Phaser.Scene {
       frameHeight: 96
     });
 
+    // Bird flying animation spritesheet
+    this.load.spritesheet('bird', 'assets/sprites/bird.png', {
+      frameWidth: 160,
+      frameHeight: 92
+    });
+
     // Ground texture
     this.load.image('ground', 'assets/sprites/ground.png');
 
@@ -143,6 +149,12 @@ export class PreloadScene extends Phaser.Scene {
 
     // egg projectile texture
     this.load.image('egg', 'assets/sprites/egg.png');
+
+    // boss sprite
+    this.load.image('boss', 'assets/sprites/boss.png');
+
+    // boss projectile
+    this.load.image('boss-projectile', 'assets/sprites/boss-projectile.png');
 
     // wizard hat sprite
     this.load.image('wizard-hat', 'assets/sprites/wizard-hat.png');
@@ -220,11 +232,20 @@ export class PreloadScene extends Phaser.Scene {
    * Register sprite animations
    */
   private createAnimations(): void {
+    
     // Create player running animation
     this.anims.create({
       key: 'player-run',
       frames: this.anims.generateFrameNumbers('player-running', { start: 0, end: 3 }),
       frameRate: 10,
+      repeat: -1
+    });
+
+    // Create bird flying animation
+    this.anims.create({
+      key: 'bird-fly',
+      frames: this.anims.generateFrameNumbers('bird', { start: 0, end: 1 }),
+      frameRate: 2,
       repeat: -1
     });
     

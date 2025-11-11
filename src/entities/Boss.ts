@@ -41,13 +41,16 @@ export class Boss implements IBoss {
     this.playerRef = playerRef;
     this.onShootProjectile = onShootProjectile;
 
+    // Use boss texture if available, otherwise fallback to placeholder
+    const textureKey = scene.textures.exists('boss') ? 'boss' : 'boss-placeholder';
+
     // Create placeholder texture if it doesn't exist
     if (!scene.textures.exists('boss-placeholder')) {
       this.createPlaceholderTexture(scene);
     }
 
     // Create sprite
-    this.sprite = scene.physics.add.sprite(x, y, 'boss-placeholder');
+    this.sprite = scene.physics.add.sprite(x, y, textureKey);
     this.sprite.setOrigin(0.5, 0.5);
 
     // Disable gravity (boss floats in place)

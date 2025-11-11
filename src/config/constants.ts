@@ -38,11 +38,11 @@ export const GAME_CONFIG = {
   CLOUD_SCROLL_FACTOR: 0.2, // 50% of camera speed
 
   // === Boss ===
-  BOSS_MAX_HEALTH: 10,
-  BOSS_BURST_SHOT_COUNT: 5, // Number of shots per burst
-  BOSS_BURST_SHOT_INTERVAL: 300, // milliseconds between burst shots
-  BOSS_PAUSE_DURATION: 2000, // milliseconds between burst cycles
-  BOSS_PROJECTILE_SPEED: 300, // pixels/second
+  BOSS_MAX_HEALTH: 5,
+  BOSS_BURST_SHOT_COUNT: 2, // Number of shots per burst
+  BOSS_BURST_SHOT_INTERVAL: 100, // milliseconds between burst shots
+  BOSS_PAUSE_DURATION: 5000, // milliseconds between burst cycles
+  BOSS_PROJECTILE_SPEED: 100, // pixels/second
 
   // === Platforms ===
   MOVING_PLATFORM_SPEED: 50, // pixels/second

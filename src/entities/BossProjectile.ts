@@ -43,13 +43,17 @@ export class BossProjectile implements IBossProjectile {
       y: dy / distance,
     };
 
-    // Create placeholder texture if it doesn't exist
+    // Use egg texture if available, otherwise fallback to placeholder
+    const textureKey = scene.textures.exists('boss-projectile') ? 'boss-projectile' : 'boss-projectile-placeholder';
+
+    // Create bird egg placeholder texture if needed
     if (!scene.textures.exists('boss-projectile-placeholder')) {
       this.createPlaceholderTexture(scene);
     }
 
     // Create sprite
-    this.sprite = scene.physics.add.sprite(x, y, 'boss-projectile-placeholder');
+    this.sprite = scene.physics.add.sprite(x, y, textureKey);
+    this.sprite.setSize(32, 32);
     this.sprite.setOrigin(0.5, 0.5);
 
     // Disable gravity

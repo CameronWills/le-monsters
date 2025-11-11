@@ -50,16 +50,12 @@ export class EnemyBird implements IEnemyBird {
     // Set world bounds for boundary checking
     this.worldBounds = { left: 0, right: worldWidth };
 
-    // Create placeholder texture if needed
-    if (!scene.textures.exists('bird-placeholder')) {
-      this.createPlaceholderTexture(scene);
-    }
-
     // Create sprite
-    this.sprite = scene.physics.add.sprite(x, y, 'bird-placeholder');
-    this.sprite.setSize(38, 28);
+    this.sprite = scene.physics.add.sprite(x, y, 'bird');
+    this.sprite.setSize(160, 20);
+    this.sprite.setDisplaySize(160, 92);
     (this.sprite.body as Phaser.Physics.Arcade.Body).setAllowGravity(false);
-
+    this.sprite.setOrigin(0.5, 0.5);
 
     // Store reference to this entity
     this.sprite.setData('entity', this);
@@ -69,21 +65,12 @@ export class EnemyBird implements IEnemyBird {
 
     // Flip sprite based on direction
     this.sprite.setFlipX(this.flyDirection === -1);
+    // Play flying animation
+    // if (!this.sprite.anims.isPlaying || this.sprite.anims.currentAnim?.key !== 'bird-fly') {
+    //   this.sprite.play('bird-fly', true);
+    // }
 
     console.log(`[EnemyBird] Created at (${x}, ${y}), flying ${flyDirection === 1 ? 'right' : 'left'}`);
-  }
-
-  /**
-   * Create placeholder texture (purple bird)
-   */
-  private createPlaceholderTexture(scene: Phaser.Scene): void {
-    const graphics = scene.add.graphics();
-    graphics.fillStyle(0x9b59b6, 1); // Purple for bird
-    graphics.fillRect(0, 0, 38, 28);
-    graphics.fillStyle(0xffffff, 1); // White eye
-    graphics.fillCircle(24, 8, 4);
-    graphics.generateTexture('bird-placeholder', 38, 28);
-    graphics.destroy();
   }
 
   /**
@@ -182,10 +169,6 @@ export class EnemyBird implements IEnemyBird {
       ease: 'Cubic.easeIn',
       onComplete: () => {
         this.sprite.setVisible(false);
-        // Respawn after delay
-        this.scene.time.delayedCall(3000, () => {
-          this.respawn();
-        });
       },
     });
 
