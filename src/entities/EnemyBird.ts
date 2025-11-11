@@ -51,8 +51,8 @@ export class EnemyBird implements IEnemyBird {
     this.worldBounds = { left: 0, right: worldWidth };
 
     // Create sprite
-    this.sprite = scene.physics.add.sprite(x, y, 'bird');
-    this.sprite.setSize(160, 20);
+    this.sprite = scene.physics.add.sprite(x, y, 'bird-flying');
+    this.sprite.setSize(160, 40);
     this.sprite.setDisplaySize(160, 92);
     (this.sprite.body as Phaser.Physics.Arcade.Body).setAllowGravity(false);
     this.sprite.setOrigin(0.5, 0.5);
@@ -66,9 +66,9 @@ export class EnemyBird implements IEnemyBird {
     // Flip sprite based on direction
     this.sprite.setFlipX(this.flyDirection === -1);
     // Play flying animation
-    // if (!this.sprite.anims.isPlaying || this.sprite.anims.currentAnim?.key !== 'bird-fly') {
-    //   this.sprite.play('bird-fly', true);
-    // }
+    if (!this.sprite.anims.isPlaying || this.sprite.anims.currentAnim?.key !== 'bird-fly') {
+      this.sprite.play('bird-fly', true);
+    }
 
     console.log(`[EnemyBird] Created at (${x}, ${y}), flying ${flyDirection === 1 ? 'right' : 'left'}`);
   }

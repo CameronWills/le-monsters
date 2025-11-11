@@ -144,13 +144,7 @@ export class EnemyShark implements IEnemyShark {
       alpha: 0,
       y: this.sprite.y + 100,
       duration: 800,
-      ease: 'Power2',
-      onComplete: () => {
-        // Respawn after delay
-        this.scene.time.delayedCall(3000, () => {
-          this.respawn();
-        });
-      },
+      ease: 'Power2'
     });
   }
 

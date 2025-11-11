@@ -127,7 +127,7 @@ export class PreloadScene extends Phaser.Scene {
     });
 
     // Bird flying animation spritesheet
-    this.load.spritesheet('bird', 'assets/sprites/bird.png', {
+    this.load.spritesheet('bird-flying', 'assets/sprites/bird-flying.png', {
       frameWidth: 160,
       frameHeight: 92
     });
@@ -237,15 +237,15 @@ export class PreloadScene extends Phaser.Scene {
     this.anims.create({
       key: 'player-run',
       frames: this.anims.generateFrameNumbers('player-running', { start: 0, end: 3 }),
-      frameRate: 10,
+      frameRate: 8,
       repeat: -1
     });
 
     // Create bird flying animation
     this.anims.create({
       key: 'bird-fly',
-      frames: this.anims.generateFrameNumbers('bird', { start: 0, end: 1 }),
-      frameRate: 2,
+      frames: this.anims.generateFrameNumbers('bird-flying', { start: 0, end: 1 }),
+      frameRate: 1,
       repeat: -1
     });
     

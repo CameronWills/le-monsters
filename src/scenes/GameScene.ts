@@ -192,11 +192,7 @@ export class GameScene extends Phaser.Scene {
       // Check if player entered boss arena and activate boss
       if (!this.boss.isActive && this.levelData.bossArena) {
         const arena = this.levelData.bossArena;
-        const playerInArena = 
-          this.player.sprite.x >= arena.x &&
-          this.player.sprite.x <= arena.x + arena.width &&
-          this.player.sprite.y >= arena.y &&
-          this.player.sprite.y <= arena.y + arena.height;
+        const playerInArena = this.player.sprite.x >= arena.x - 500;
 
         if (playerInArena) {
           console.log('[GameScene] Player entered boss arena - activating boss!');
