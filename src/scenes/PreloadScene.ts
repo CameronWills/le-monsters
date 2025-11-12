@@ -122,8 +122,8 @@ export class PreloadScene extends Phaser.Scene {
     
     // Player running animation spritesheet
     this.load.spritesheet('player-running', 'assets/sprites/player-running.png', {
-      frameWidth: 64,
-      frameHeight: 96
+      frameWidth: 70,
+      frameHeight: 104
     });
 
     // Bird flying animation spritesheet
