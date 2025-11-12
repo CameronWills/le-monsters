@@ -89,7 +89,7 @@ export class Checkpoint implements ICheckpoint {
    * Get respawn position
    */
   getRespawnPosition(): { x: number; y: number } {
-    return { ...this.position };
+    return { x: this.position.x, y: this.position.y - 50 }; // Slightly above checkpoint
   }
 
   /**

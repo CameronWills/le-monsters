@@ -25,7 +25,7 @@ export const GAME_CONFIG = {
   BIRD_FLY_SPEED: 70, // pixels/second
   BIRD_DROPPING_COOLDOWN_MIN: 3000, // milliseconds
   BIRD_DROPPING_COOLDOWN_MAX: 7000, // milliseconds
-  SHARK_PATROL_SPEED: 80, // pixels/second
+  SHARK_PATROL_SPEED: 30, // pixels/second
 
   // === Frog Enemy (NEW) ===
   FROG_JUMP_INTERVAL: 2000, // milliseconds between jumps (MUST be exactly 2000ms)

@@ -159,8 +159,11 @@ export class PreloadScene extends Phaser.Scene {
     // wizard hat sprite
     this.load.image('wizard-hat', 'assets/sprites/wizard-hat.png');
 
-   // wizard staff sprite
+    // wizard staff sprite
     this.load.image('wizard-staff', 'assets/sprites/wizard-staff.png');
+
+    // shark sprite
+    this.load.image('shark', 'assets/sprites/shark.png');
 
     // ==========================================
     // NEW: Frog Enemy Sprite (T013)

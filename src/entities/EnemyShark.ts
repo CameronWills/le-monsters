@@ -37,13 +37,16 @@ export class EnemyShark implements IEnemyShark {
     this.patrolSpeed = GAME_CONFIG.SHARK_PATROL_SPEED;
     this.patrolDirection = 1; // Start moving right
 
+    // Use shark texture if available, otherwise fallback to placeholder
+    const textureKey = scene.textures.exists('shark') ? 'shark' : 'shark-placeholder';
+
     // Create placeholder texture if it doesn't exist
     if (!scene.textures.exists('shark-placeholder')) {
       this.createPlaceholderTexture(scene);
     }
 
     // Create sprite
-    this.sprite = scene.physics.add.sprite(x, y, 'shark-placeholder');
+    this.sprite = scene.physics.add.sprite(x, y, textureKey);
     this.sprite.setOrigin(0.5, 0.5);
 
     // Disable gravity for patrol (sharks float in water)

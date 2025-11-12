@@ -228,10 +228,10 @@
     },
     {
       "type": "shark",
-      "x": 1000,
-      "y": 950,
-      "patrolStart": 900,
-      "patrolEnd": 1100
+      "x": 1200,
+      "y": 990,
+      "patrolStart": 1230,
+      "patrolEnd": 1370
     },
     {
       "type": "shark",
