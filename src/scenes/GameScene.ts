@@ -199,6 +199,23 @@ export class GameScene extends Phaser.Scene {
           this.boss.isActive = true;
           this.hudManager.showBossHealthBar();
           this.hudManager.updateBossHealth(this.boss.health, this.boss.maxHealth);
+          
+          // Fade background color to dark grey for dramatic boss fight atmosphere
+          this.tweens.addCounter({
+            from: 0,
+            to: 255,
+            duration: 2000,
+            onUpdate: (tween) => {
+              const value = tween.getValue();
+              if (value === null) return;
+              // Interpolate from light blue (135, 206, 235) to dark grey (64, 64, 64)
+              const r = Math.floor(135 + (64 - 135) * (value / 255));
+              const g = Math.floor(206 + (64 - 206) * (value / 255));
+              const b = Math.floor(235 + (64 - 235) * (value / 255));
+              const color = Phaser.Display.Color.GetColor(r, g, b);
+              this.cameras.main.setBackgroundColor(color);
+            }
+          });
         }
       }
 
