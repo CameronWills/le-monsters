@@ -17,7 +17,7 @@ export const GAME_CONFIG = {
   PLAYER_RESPAWN_DELAY: 2000, // milliseconds
 
   // === Shooting ===
-  SHOOT_COOLDOWN: 1000, // milliseconds between shots
+  SHOOT_COOLDOWN: 500, // milliseconds between shots
   PROJECTILE_SPEED: 400, // pixels/second
   PROJECTILE_MAX_DISTANCE: 800, // pixels before auto-destroy
 
@@ -38,9 +38,9 @@ export const GAME_CONFIG = {
   CLOUD_SCROLL_FACTOR: 0.2, // 50% of camera speed
 
   // === Boss ===
-  BOSS_MAX_HEALTH: 5,
+  BOSS_MAX_HEALTH: 8,
   BOSS_BURST_SHOT_COUNT: 2, // Number of shots per burst
-  BOSS_BURST_SHOT_INTERVAL: 300, // milliseconds between burst shots
+  BOSS_BURST_SHOT_INTERVAL: 400, // milliseconds between burst shots
   BOSS_PAUSE_DURATION: 4000, // milliseconds between burst cycles
   BOSS_PROJECTILE_SPEED: 200, // pixels/second
 
