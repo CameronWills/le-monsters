@@ -55,11 +55,6 @@ export class MainMenuScene extends Phaser.Scene {
       this.scene.start(SCENE_KEYS.ABOUT);
     });
 
-    // Settings button (placeholder for future)
-    this.createButton(centerX, centerY + 330, 'Settings', () => {
-      console.log('[MainMenuScene] Settings clicked (not yet implemented)');
-    });
-
     // Add bouncing animation to title
     this.tweens.add({
       targets: title,

@@ -19,7 +19,7 @@ export class AboutScene extends Phaser.Scene {
     this.cameras.main.setBackgroundColor('#1a1a2e');
 
     // Title
-    const title = this.add.text(centerX, 80, 'About Le Monsters', {
+    const title = this.add.text(centerX, 80, "About Labufu's Mission", {
       fontSize: '48px',
       color: '#ff6b6b',
       fontStyle: 'bold',
@@ -34,14 +34,16 @@ export class AboutScene extends Phaser.Scene {
       centerY - 50,
       `A browser-based 2D platformer adventure!
 
-Guide Hugo the wizard through dangerous lands filled with monsters.
+Guide Labufu the wizard through dangerous lands filled with monsters.
 Collect coins, activate checkpoints, and defeat the boss!
 
 Controls:
 WASD or Arrow Keys - Move
-W/Up Arrow - Jump
+Space/W/Up Arrow - Jump
 Shift - Shoot (with wizard hat)
 ESC - Pause
+
+Designed and illustrated by Hugo W.
 
 Built with Phaser 3 and TypeScript`,
       {

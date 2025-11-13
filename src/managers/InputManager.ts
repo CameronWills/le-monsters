@@ -60,8 +60,7 @@ export class InputManager {
     }
 
     // Buffer jump input
-    if (Phaser.Input.Keyboard.JustDown(this.cursors.space!) ||
-        Phaser.Input.Keyboard.JustDown(this.wasd.up)) {
+    if (Phaser.Input.Keyboard.JustDown(this.cursors.space!) || Phaser.Input.Keyboard.JustDown(this.wasd.up) || Phaser.Input.Keyboard.JustDown(this.cursors.up)) {
       this.jumpBuffer = GAME_CONFIG.JUMP_BUFFER_FRAMES * (1000 / GAME_CONFIG.TARGET_FPS);
     }
   }
