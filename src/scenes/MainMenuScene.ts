@@ -15,41 +15,48 @@ export class MainMenuScene extends Phaser.Scene {
     const centerX = this.cameras.main.width / 2;
     const centerY = this.cameras.main.height / 2;
 
-    // Background color
-    this.cameras.main.setBackgroundColor('#1a1a2e');
+    // Set white background color
+    this.cameras.main.setBackgroundColor('#ffffff');
+
+    // Background image
+    const background = this.add.image(centerX, centerY, 'menu-background');
+    background.setDisplaySize(1255, this.cameras.main.height);
+    background.setDepth(0); // Behind everything
+
+    // Add dark overlay for better text readability
+    const overlay = this.add.rectangle(
+      centerX,
+      centerY,
+      this.cameras.main.width,
+      this.cameras.main.height,
+      0x000000,
+      0 // 40% opacity
+    );
+    overlay.setDepth(1);
 
     // Game title
-    const title = this.add.text(centerX, centerY - 150, 'LE MONSTERS', {
+    const title = this.add.text(centerX, centerY - 150, "LABUFU'S\nMISSION", {
       fontSize: '84px',
-      color: '#ff6b6b',
+      color: '#333',
       fontStyle: 'bold',
-      stroke: '#000000',
+      stroke: '#FFF',
       strokeThickness: 8,
+      align: 'center',
     });
     title.setOrigin(0.5).setDepth(DEPTHS.UI);
 
-    // Subtitle
-    const subtitle = this.add.text(centerX, centerY - 80, 'Browser Edition', {
-      fontSize: '32px',
-      color: '#ffffff',
-      fontStyle: 'italic',
-      stroke: '#000000',
-      strokeThickness: 4,
-    });
-    subtitle.setOrigin(0.5).setDepth(DEPTHS.UI);
-
     // New Game button
-    this.createButton(centerX, centerY + 20, 'New Game', () => {
+    this.createButton(centerX, centerY + 170, 'New Game', () => {
       this.scene.start(SCENE_KEYS.GAME);
     });
 
     // About button
-    this.createButton(centerX, centerY + 100, 'About', () => {
+    this.createButton(centerX, centerY + 250, 'About', () => {
       this.scene.start(SCENE_KEYS.ABOUT);
     });
 
     // Settings button (placeholder for future)
-    this.createButton(centerX, centerY + 180, 'Settings', () => {
+    this.createButton(centerX, centerY + 330, 'Settings', () => {
       console.log('[MainMenuScene] Settings clicked (not yet implemented)');
     });
 
@@ -66,7 +73,7 @@ export class MainMenuScene extends Phaser.Scene {
     // Version text
     const version = this.add.text(10, this.cameras.main.height - 30, 'v1.0.0-alpha', {
       fontSize: '16px',
-      color: '#666666',
+      color: '#333',
     });
     version.setDepth(DEPTHS.UI);
 
@@ -86,7 +93,7 @@ export class MainMenuScene extends Phaser.Scene {
 
     // Button background
     const bg = this.add.rectangle(0, 0, 300, 60, 0x2a2a4e);
-    bg.setStrokeStyle(3, 0xff6b6b);
+    bg.setStrokeStyle(3, 0xffffff);
 
     // Button text
     const label = this.add.text(0, 0, text, {

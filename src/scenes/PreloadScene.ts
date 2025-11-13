@@ -117,6 +117,9 @@ export class PreloadScene extends Phaser.Scene {
     // Level data
     this.load.json('level1', 'assets/level-data/level1.json');
 
+    // UI assets
+    this.load.image('menu-background', 'assets/ui/menu.jpg');
+
     // Player sprite
     this.load.image('player', 'assets/sprites/player.png');
     
