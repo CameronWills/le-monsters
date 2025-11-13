@@ -54,6 +54,10 @@ export class GameScene extends Phaser.Scene {
   private cloudLayer?: CloudLayer;
     private waterHazards: WaterHazard[] = [];
 
+  // Game music
+  private gameMusic?: Phaser.Sound.BaseSound;
+  private bossMusic?: Phaser.Sound.BaseSound;
+
   // Death/respawn state
   private isDead = false;
   private deathTimer = 0;
@@ -107,6 +111,13 @@ export class GameScene extends Phaser.Scene {
     this.input.keyboard?.on('keydown-ESC', () => {
       this.handlePause();
     });
+
+    // Play game music at 10% volume, looping
+    this.gameMusic = this.sound.add('game-music', {
+      volume: 0.1,
+      loop: true
+    });
+    this.gameMusic.play();
 
     console.log('[GameScene] Setup complete');
   }
@@ -199,6 +210,17 @@ export class GameScene extends Phaser.Scene {
           this.boss.isActive = true;
           this.hudManager.showBossHealthBar();
           this.hudManager.updateBossHealth(this.boss.health, this.boss.maxHealth);
+          
+          // Stop game music and start boss fight music
+          if (this.gameMusic && this.gameMusic.isPlaying) {
+            this.gameMusic.stop();
+          }
+          
+          this.bossMusic = this.sound.add('boss-fight', {
+            volume: 0.1,
+            loop: true
+          });
+          this.bossMusic.play();
           
           // Fade background color to dark grey for dramatic boss fight atmosphere
           this.tweens.addCounter({
@@ -977,6 +999,11 @@ export class GameScene extends Phaser.Scene {
     // Hide boss health bar
     this.hudManager.hideBossHealthBar();
     
+    // Stop boss music
+    if (this.bossMusic && this.bossMusic.isPlaying) {
+      this.bossMusic.stop();
+    }
+    
     // Stop music
     this.audioManager.stopMusic();
     
@@ -1093,6 +1120,17 @@ export class GameScene extends Phaser.Scene {
    */
   private handlePause(): void {
     console.log('[GameScene] Pausing game');
+    
+    // Pause game music
+    if (this.gameMusic && this.gameMusic.isPlaying) {
+      this.gameMusic.pause();
+    }
+    
+    // Pause boss music
+    if (this.bossMusic && this.bossMusic.isPlaying) {
+      this.bossMusic.pause();
+    }
+    
     this.scene.pause(SCENE_KEYS.GAME);
     this.scene.launch(SCENE_KEYS.PAUSE, { gameSceneKey: SCENE_KEYS.GAME });
   }

@@ -120,6 +120,15 @@ export class PreloadScene extends Phaser.Scene {
     // UI assets
     this.load.image('menu-background', 'assets/ui/menu.jpg');
 
+    // Menu music
+    this.load.audio('menu-music', 'assets/audio/music/menu-music.m4a');
+
+    // Game music
+    this.load.audio('game-music', 'assets/audio/music/game-music.m4a');
+
+    // Boss fight music
+    this.load.audio('boss-fight', 'assets/audio/music/boss-fight.m4a');
+
     // Player sprite
     this.load.image('player', 'assets/sprites/player.png');
     

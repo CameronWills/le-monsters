@@ -49,6 +49,17 @@ export class PauseScene extends Phaser.Scene {
 
     // Restart button
     this.createButton(centerX, centerY + 80, 'Restart', () => {
+      // Stop game music and boss music before restarting
+      const gameScene = this.scene.get(this.gameSceneKey) as any;
+      if (gameScene) {
+        if (gameScene.gameMusic) {
+          gameScene.gameMusic.stop();
+        }
+        if (gameScene.bossMusic) {
+          gameScene.bossMusic.stop();
+        }
+      }
+      
       this.scene.stop(SCENE_KEYS.PAUSE);
       this.scene.stop(this.gameSceneKey);
       this.scene.start(SCENE_KEYS.GAME);
@@ -56,6 +67,17 @@ export class PauseScene extends Phaser.Scene {
 
     // Main Menu button
     this.createButton(centerX, centerY + 160, 'Main Menu', () => {
+      // Stop game music and boss music before going to main menu
+      const gameScene = this.scene.get(this.gameSceneKey) as any;
+      if (gameScene) {
+        if (gameScene.gameMusic) {
+          gameScene.gameMusic.stop();
+        }
+        if (gameScene.bossMusic) {
+          gameScene.bossMusic.stop();
+        }
+      }
+      
       this.scene.stop(SCENE_KEYS.PAUSE);
       this.scene.stop(this.gameSceneKey);
       this.scene.start(SCENE_KEYS.MAIN_MENU);
@@ -73,6 +95,17 @@ export class PauseScene extends Phaser.Scene {
    * Resume the game
    */
   private resumeGame(): void {
+    // Get the game scene and resume its music
+    const gameScene = this.scene.get(this.gameSceneKey) as any;
+    if (gameScene) {
+      if (gameScene.gameMusic && !gameScene.gameMusic.isPlaying) {
+        gameScene.gameMusic.resume();
+      }
+      if (gameScene.bossMusic && !gameScene.bossMusic.isPlaying) {
+        gameScene.bossMusic.resume();
+      }
+    }
+    
     this.scene.resume(this.gameSceneKey);
     this.scene.stop(SCENE_KEYS.PAUSE);
   }

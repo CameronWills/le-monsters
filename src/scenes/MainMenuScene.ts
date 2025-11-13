@@ -7,6 +7,8 @@ import Phaser from 'phaser';
 import { SCENE_KEYS, DEPTHS } from '../config/constants';
 
 export class MainMenuScene extends Phaser.Scene {
+  private menuMusic?: Phaser.Sound.BaseSound;
+
   constructor() {
     super({ key: SCENE_KEYS.MAIN_MENU });
   }
@@ -17,6 +19,13 @@ export class MainMenuScene extends Phaser.Scene {
 
     // Set white background color
     this.cameras.main.setBackgroundColor('#ffffff');
+
+    // Play menu music at 30% volume, no repeat
+    this.menuMusic = this.sound.add('menu-music', {
+      volume: 0.2,
+      loop: false
+    });
+    this.menuMusic.play();
 
     // Background image
     const background = this.add.image(centerX, centerY, 'menu-background');
@@ -47,11 +56,19 @@ export class MainMenuScene extends Phaser.Scene {
 
     // New Game button
     this.createButton(centerX, centerY + 170, 'New Game', () => {
+      // Stop menu music when starting game
+      if (this.menuMusic) {
+        this.menuMusic.stop();
+      }
       this.scene.start(SCENE_KEYS.GAME);
     });
 
     // About button
     this.createButton(centerX, centerY + 250, 'About', () => {
+      // Stop menu music when going to about screen
+      if (this.menuMusic) {
+        this.menuMusic.stop();
+      }
       this.scene.start(SCENE_KEYS.ABOUT);
     });
 
